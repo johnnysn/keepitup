@@ -5,13 +5,16 @@
 
 <header>
 	<Wrapper class="my-2 flex items-center justify-between bg-background/60">
-		<a href="/"><img src="/KeepupTop.jpeg" height="84px" alt="Keepup logo" /></a>
+		<a href="/" class="flex items-center">
+			<img src="/logo-mini.png" height="94px" alt="Keepup logo" />
+			<span class="ml-4 text-lg">Keep <br />ItUp</span>
+		</a>
 
 		<div class="flex items-center gap-6 py-4 pr-2 md:pr-6">
 			<LightSwitch />
 			<nav class="flex items-center gap-3">
 				<!-- <a href={`/tasks/${todayStr}`}>Tasks</a> -->
-				<a href="/data">Data</a>
+				<a href="/about">About</a>
 			</nav>
 		</div>
 	</Wrapper>
