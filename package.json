@@ -40,6 +40,7 @@
 		"vite": "^6.0.0"
 	},
 	"dependencies": {
+		"@auth/sveltekit": "^1.8.0",
 		"lucide-svelte": "^0.484.0",
 		"mode-watcher": "^0.5.1"
 	}
