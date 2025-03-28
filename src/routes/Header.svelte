@@ -1,6 +1,9 @@
 <script lang="ts">
 	import LightSwitch from '$lib/components/ui/LightSwitch.svelte';
 	import Wrapper from '$lib/components/ui/Wrapper.svelte';
+	import { page } from '$app/state';
+	import { SignOut } from '@auth/sveltekit/components';
+	import Button from '$lib/components/ui/button/button.svelte';
 </script>
 
 <header>
@@ -13,8 +16,14 @@
 		<div class="flex items-center gap-6 py-4 pr-2 md:pr-6">
 			<LightSwitch />
 			<nav class="flex items-center gap-3">
-				<!-- <a href={`/tasks/${todayStr}`}>Tasks</a> -->
-				<a href="/about">About</a>
+				{#if page.data.session}
+					<SignOut>
+						<span>Sign Out</span>
+					</SignOut>
+				{:else}
+					<a href={`/signin`}>Sign In</a>
+					<a href="/about">About</a>
+				{/if}
 			</nav>
 		</div>
 	</Wrapper>
