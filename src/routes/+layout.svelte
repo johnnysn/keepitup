@@ -7,6 +7,10 @@
 	let { children } = $props();
 </script>
 
+<svelte:head>
+	<title>Keep It Up</title>
+</svelte:head>
+
 <ModeWatcher />
 
 <div class="bg-grid dark:bg-crow flex min-h-screen flex-col">

@@ -7,10 +7,10 @@
 </script>
 
 <header>
-	<Wrapper class="my-2 flex items-center justify-between bg-background/60">
+	<Wrapper class="my-2 flex items-center justify-between bg-background/60 md:px-2">
 		<a href="/" class="flex items-center">
-			<img src="/logo-mini.png" height="94px" alt="Keepup logo" />
-			<span class="ml-4 text-lg">Keep <br />ItUp</span>
+			<img src="/Logo-Light.png" class="dark:hidden" height="92px" alt="Keep It Up" />
+			<img src="/Logo-Dark.png" class="hidden dark:block" height="92px" alt="Keep It Up" />
 		</a>
 
 		<div class="flex items-center gap-6 py-4 pr-2 md:pr-6">
