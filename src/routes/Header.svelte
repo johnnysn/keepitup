@@ -17,6 +17,7 @@
 			<LightSwitch />
 			<nav class="flex items-center gap-3">
 				{#if page.data.session}
+					<a href="/tasks">Tasks</a>
 					<SignOut>
 						<span>Sign Out</span>
 					</SignOut>

@@ -1,14 +1,7 @@
-export function load() {
+import prisma from '$lib/server/prisma';
+
+export async function load() {
 	return {
-		tasks: [
-			{
-				id: 'fjoajfioadfjiad',
-				name: 'cebolo'
-			},
-			{
-				id: 'fasdfasdfdas',
-				name: 'markolo'
-			}
-		]
+		tasks: await prisma.task.findMany()
 	};
 }
