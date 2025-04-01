@@ -1,7 +1,6 @@
 <script>
-	import { SignIn, SignOut } from '@auth/sveltekit/components';
 	import { page } from '$app/state';
-	import Button from '$lib/components/ui/button/button.svelte';
+	import { buttonVariants } from '$lib/components/ui/button';
 </script>
 
 <div class="flex flex-col items-center">
@@ -15,13 +14,8 @@
 				<small>Signed in as</small><br />
 				<strong>{page.data.session.user?.name ?? 'User'}</strong>
 			</span>
-			<SignOut>
-				<Button slot="submitButton">Sign Out</Button>
-			</SignOut>
 		{:else}
-			<SignIn>
-				<Button slot="submitButton">Sign In</Button>
-			</SignIn>
+			<a class={buttonVariants({ variant: 'default' })} href="/auth/signin">Sign In</a>
 		{/if}
 	</div>
 </div>

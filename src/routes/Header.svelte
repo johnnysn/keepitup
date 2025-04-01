@@ -3,7 +3,6 @@
 	import Wrapper from '$lib/components/ui/Wrapper.svelte';
 	import { page } from '$app/state';
 	import { SignOut } from '@auth/sveltekit/components';
-	import Button from '$lib/components/ui/button/button.svelte';
 </script>
 
 <header>
@@ -17,7 +16,7 @@
 			<LightSwitch />
 			<nav class="flex items-center gap-3">
 				{#if page.data.session}
-					<a href="/tasks">Tasks</a>
+					<a href="/user/tasks">Tasks</a>
 					<SignOut>
 						<span>Sign Out</span>
 					</SignOut>
