@@ -1,4 +1,4 @@
-import { simpleTaskSchema, taskDeleteSchema } from '$lib/schemas/task-schema';
+import { simpleTaskSchema, taskDeleteSchema, taskUpdateSchema } from '$lib/schemas/task-schema';
 import prisma from '$lib/server/prisma';
 import { atStartOfDay } from '$lib/utils';
 import { fail, type Actions } from '@sveltejs/kit';
@@ -39,6 +39,24 @@ export const actions: Actions = {
 		await prisma.task.delete({
 			where: {
 				id: data.id
+			}
+		});
+
+		return {
+			success: true
+		};
+	},
+	update: async ({ request }) => {
+		const formData = await request.formData();
+		const data = taskUpdateSchema.parse(formData);
+
+		await prisma.task.update({
+			where: {
+				id: data.id
+			},
+			data: {
+				name: data.name,
+				description: data.description
 			}
 		});
 

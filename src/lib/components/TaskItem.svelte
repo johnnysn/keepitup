@@ -15,9 +15,28 @@
 
 	const labelClass = '';
 	let editMode = $state(false);
+
+	let form: HTMLFormElement;
+	let isPosting = $state(false);
 </script>
 
-<form class="flex w-full flex-col px-2 py-1" method="POST" action="?/delete" use:enhance>
+<form
+	bind:this={form}
+	class="flex w-full flex-col px-2 py-1"
+	method="POST"
+	action="?/update"
+	use:enhance={({ formElement, formData, action, cancel, submitter }) => {
+		if (isPosting) {
+			cancel();
+		} else {
+			isPosting = true;
+		}
+		return async ({ result, update }) => {
+			update({ reset: false });
+			isPosting = false;
+		};
+	}}
+>
 	<input type="hidden" name="id" value={task.id} />
 	<div class="flex w-full items-center space-x-2">
 		<Checkbox size={'lg'} />
@@ -29,10 +48,11 @@
 					type="text"
 					name="name"
 					class={cn(
-						'w-[180px] border-none bg-transparent p-0 text-sm text-foreground focus:text-foreground focus:outline-none focus:ring-0 md:w-full md:text-lg',
+						'w-[180px] border-none bg-transparent p-0 text-sm text-foreground focus:text-foreground focus:outline-none focus:ring-0 md:w-full md:text-base',
 						labelClass
 					)}
 					value={task.name}
+					onblur={() => form.requestSubmit()}
 				/>
 			</Label>
 		</div>
@@ -50,9 +70,29 @@
 					<ChevronsDown class="size-4" />
 				{/if}
 			</Button>
-			<Button variant="outline" size="icon" type="submit" formaction="?/delete">
+			<button type="submit" class="hidden">Update</button>
+			<Button
+				variant="outline"
+				size="icon"
+				type="submit"
+				formaction="?/delete"
+				disabled={isPosting}
+			>
 				<Trash2 class="size-4" />
 			</Button>
 		</div>
 	</div>
+
+	{#if editMode}
+		<div class="mt-2 flex flex-col gap-1.5 pl-3">
+			<input
+				type="text"
+				name="description"
+				class="w-[270px] border-none bg-transparent p-0 text-sm text-foreground/50 focus:text-foreground focus:outline-none focus:ring-0 md:w-full"
+				placeholder="Add description here"
+				value={task.description}
+				onblur={() => form.requestSubmit()}
+			/>
+		</div>
+	{/if}
 </form>
