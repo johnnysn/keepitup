@@ -18,7 +18,7 @@
 	const { form: formData, enhance } = form;
 </script>
 
-<form method="POST" class="max-w-screen-sm" action="?/create" use:enhance>
+<form method="POST" class="w-full max-w-screen-sm" action="?/create" use:enhance>
 	<Form.Field {form} name="name">
 		<Form.Control let:attrs>
 			<Form.Label>New task</Form.Label>

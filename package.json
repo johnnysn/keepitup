@@ -35,6 +35,7 @@
 		"prisma": "^6.5.0",
 		"svelte": "^5.0.0",
 		"svelte-check": "^4.0.0",
+		"svelte-dnd-action": "^0.9.60",
 		"sveltekit-superforms": "^2.24.0",
 		"tailwind-merge": "^3.0.2",
 		"tailwind-variants": "^1.0.0",

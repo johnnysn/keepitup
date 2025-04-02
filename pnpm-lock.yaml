@@ -81,6 +81,9 @@ importers:
       svelte-check:
         specifier: ^4.0.0
         version: 4.1.5(svelte@5.25.3)(typescript@5.8.2)
+      svelte-dnd-action:
+        specifier: ^0.9.60
+        version: 0.9.60(svelte@5.25.3)
       sveltekit-superforms:
         specifier: ^2.24.0
         version: 2.24.0(@sveltejs/kit@2.20.2(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.25.3)(vite@6.2.3(jiti@1.21.7)(yaml@2.7.0)))(svelte@5.25.3)(vite@6.2.3(jiti@1.21.7)(yaml@2.7.0)))(@types/json-schema@7.0.15)(svelte@5.25.3)(typescript@5.8.2)
@@ -1664,6 +1667,11 @@ packages:
     peerDependencies:
       svelte: ^4.0.0 || ^5.0.0-next.0
       typescript: '>=5.0.0'
+
+  svelte-dnd-action@0.9.60:
+    resolution: {integrity: sha512-PTz9RlJiSTNXo0mIUGPmYXRMcqzLG/ghr79YqLrsOrq0dM4gQhXn97AkuImTalNuIxl/tohFK3uQPsEML+ZKeQ==}
+    peerDependencies:
+      svelte: '>=3.23.0 || ^5.0.0-next.0'
 
   svelte-eslint-parser@0.43.0:
     resolution: {integrity: sha512-GpU52uPKKcVnh8tKN5P4UZpJ/fUDndmq7wfsvoVXsyP+aY0anol7Yqo01fyrlaWGMFfm4av5DyrjlaXdLRJvGA==}
@@ -3315,6 +3323,10 @@ snapshots:
       typescript: 5.8.2
     transitivePeerDependencies:
       - picomatch
+
+  svelte-dnd-action@0.9.60(svelte@5.25.3):
+    dependencies:
+      svelte: 5.25.3
 
   svelte-eslint-parser@0.43.0(svelte@5.25.3):
     dependencies:

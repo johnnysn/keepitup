@@ -29,7 +29,7 @@
 					type="text"
 					name="name"
 					class={cn(
-						'w-[180px] border-none bg-transparent p-0 text-foreground focus:text-foreground focus:outline-none focus:ring-0 md:w-full',
+						'w-[180px] border-none bg-transparent p-0 text-sm text-foreground focus:text-foreground focus:outline-none focus:ring-0 md:w-full md:text-lg',
 						labelClass
 					)}
 					value={task.name}
