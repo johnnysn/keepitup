@@ -14,6 +14,9 @@ export async function load() {
 
 export const actions: Actions = {
 	create: async (event) => {
+		const session = await event.locals.auth();
+		if (!session || !session.user || !session.user.email) throw new Error('Access denied.');
+
 		const form = await superValidate(event, zod(simpleTaskSchema));
 		if (!form.valid) {
 			return fail(400, {
@@ -24,7 +27,8 @@ export const actions: Actions = {
 		await prisma.task.create({
 			data: {
 				name: form.data.name,
-				date: atStartOfDay(new Date())
+				date: atStartOfDay(new Date()),
+				userEmail: session.user.email
 			}
 		});
 
@@ -32,9 +36,21 @@ export const actions: Actions = {
 			form
 		};
 	},
-	delete: async ({ request }) => {
+	delete: async ({ request, locals }) => {
+		const session = await locals.auth();
+		if (!session || !session.user || !session.user.email) throw new Error('Access denied.');
+
 		const formData = await request.formData();
 		const data = taskDeleteSchema.parse(formData);
+
+		const savedTask = await prisma.task.findUnique({
+			where: {
+				id: data.id
+			}
+		});
+
+		if (!savedTask || savedTask.userEmail !== session.user.email)
+			throw new Error('Task does not belong to the user.');
 
 		await prisma.task.delete({
 			where: {
@@ -46,9 +62,21 @@ export const actions: Actions = {
 			success: true
 		};
 	},
-	update: async ({ request }) => {
+	update: async ({ request, locals }) => {
+		const session = await locals.auth();
+		if (!session || !session.user || !session.user.email) throw new Error('Access denied.');
+
 		const formData = await request.formData();
 		const data = taskUpdateSchema.parse(formData);
+
+		const savedTask = await prisma.task.findUnique({
+			where: {
+				id: data.id
+			}
+		});
+
+		if (!savedTask || savedTask.userEmail !== session.user.email)
+			throw new Error('Task does not belong to the user.');
 
 		await prisma.task.update({
 			where: {
