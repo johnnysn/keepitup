@@ -4,6 +4,8 @@
 	import { ModeWatcher } from 'mode-watcher';
 	import '../app.css';
 	import Header from './Header.svelte';
+	import { Toaster } from '$lib/components/ui/sonner';
+
 	let { children } = $props();
 </script>
 
@@ -12,6 +14,8 @@
 </svelte:head>
 
 <ModeWatcher />
+
+<Toaster />
 
 <div class="bg-grid dark:bg-crow flex min-h-screen flex-col">
 	<Header />

@@ -2,6 +2,7 @@
 	import * as Form from '$lib/components/ui/form';
 	import { Input } from '$lib/components/ui/input';
 	import { simpleTaskSchema, type SimpleTaskSchema } from '$lib/schemas/task-schema';
+	import { toast } from 'svelte-sonner';
 	import { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 
@@ -12,10 +13,18 @@
 	let { data }: Props = $props();
 
 	const form = superForm(data, {
-		validators: zodClient(simpleTaskSchema)
+		validators: zodClient(simpleTaskSchema),
+		onError({ result }) {
+			toast.error(result.error.message);
+		},
+		onUpdated({ form }) {
+			if (form.valid) {
+				toast.success('Task successfully created!');
+			}
+		}
 	});
 
-	const { form: formData, enhance } = form;
+	const { form: formData, enhance, message } = form;
 </script>
 
 <form method="POST" class="w-full max-w-screen-sm" action="?/create" use:enhance>

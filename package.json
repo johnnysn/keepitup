@@ -29,6 +29,7 @@
 		"formsnap": "1.0.1",
 		"globals": "^15.14.0",
 		"lucide-svelte": "^0.484.0",
+		"mode-watcher": "^0.5.1",
 		"prettier": "^3.4.2",
 		"prettier-plugin-svelte": "^3.3.3",
 		"prettier-plugin-tailwindcss": "^0.6.10",
@@ -36,6 +37,7 @@
 		"svelte": "^5.0.0",
 		"svelte-check": "^4.0.0",
 		"svelte-dnd-action": "^0.9.60",
+		"svelte-sonner": "^0.3.28",
 		"sveltekit-superforms": "^2.24.0",
 		"tailwind-merge": "^3.0.2",
 		"tailwind-variants": "^1.0.0",
@@ -53,7 +55,6 @@
 		"@auth/prisma-adapter": "^2.8.0",
 		"@auth/sveltekit": "^1.8.0",
 		"@prisma/client": "6.5.0",
-		"mode-watcher": "^0.5.1",
 		"zod-form-data": "^2.0.7"
 	}
 }

@@ -1,7 +1,7 @@
 import { simpleTaskSchema, taskDeleteSchema, taskUpdateSchema } from '$lib/schemas/task-schema';
 import prisma from '$lib/server/prisma';
 import { atStartOfDay } from '$lib/utils';
-import { fail, type Actions } from '@sveltejs/kit';
+import { fail, error, type Actions } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
@@ -14,15 +14,15 @@ export async function load() {
 
 export const actions: Actions = {
 	create: async (event) => {
-		const session = await event.locals.auth();
-		if (!session || !session.user || !session.user.email) throw new Error('Access denied.');
-
 		const form = await superValidate(event, zod(simpleTaskSchema));
 		if (!form.valid) {
 			return fail(400, {
 				form
 			});
 		}
+
+		const session = await event.locals.auth();
+		if (!session || !session.user || !session.user.email) error(401, 'User is not authorized.');
 
 		await prisma.task.create({
 			data: {
@@ -38,7 +38,7 @@ export const actions: Actions = {
 	},
 	delete: async ({ request, locals }) => {
 		const session = await locals.auth();
-		if (!session || !session.user || !session.user.email) throw new Error('Access denied.');
+		if (!session || !session.user || !session.user.email) error(401, 'User is not authorized.');
 
 		const formData = await request.formData();
 		const data = taskDeleteSchema.parse(formData);
@@ -50,7 +50,7 @@ export const actions: Actions = {
 		});
 
 		if (!savedTask || savedTask.userEmail !== session.user.email)
-			throw new Error('Task does not belong to the user.');
+			return fail(403, { message: 'User does not have access to the task.' });
 
 		await prisma.task.delete({
 			where: {
@@ -64,7 +64,8 @@ export const actions: Actions = {
 	},
 	update: async ({ request, locals }) => {
 		const session = await locals.auth();
-		if (!session || !session.user || !session.user.email) throw new Error('Access denied.');
+		if (!session || !session.user || !session.user.email)
+			return fail(401, { message: 'User is not authorized.' });
 
 		const formData = await request.formData();
 		const data = taskUpdateSchema.parse(formData);
@@ -76,7 +77,7 @@ export const actions: Actions = {
 		});
 
 		if (!savedTask || savedTask.userEmail !== session.user.email)
-			throw new Error('Task does not belong to the user.');
+			return fail(403, { message: 'User does not have access to the task.' });
 
 		await prisma.task.update({
 			where: {
