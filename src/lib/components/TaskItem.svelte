@@ -6,6 +6,7 @@
 	import { Button } from './ui/button';
 	import { Trash2, ChevronsDown, ChevronsUp } from 'lucide-svelte';
 	import { enhance } from '$app/forms';
+	import { onDestroy } from 'svelte';
 
 	type Props = {
 		task: Task;
@@ -18,6 +19,20 @@
 
 	let form: HTMLFormElement;
 	let isPosting = $state(false);
+	let doneValue = $state(task.done);
+
+	let timeoutId: number | undefined;
+	function checkedChanged(value: boolean | 'indeterminate'): void {
+		timeoutId = setTimeout(() => {
+			form.requestSubmit();
+		}, 200);
+	}
+
+	onDestroy(() => {
+		if (timeoutId) {
+			clearTimeout(timeoutId);
+		}
+	});
 </script>
 
 <form
@@ -39,7 +54,8 @@
 >
 	<input type="hidden" name="id" value={task.id} />
 	<div class="flex w-full items-center space-x-2">
-		<Checkbox size={'lg'} />
+		<Checkbox size={'lg'} bind:checked={doneValue} onCheckedChange={checkedChanged} />
+		<input type="hidden" name="done" bind:value={doneValue} />
 		<div class="grid flex-1 items-center gap-1.5 leading-none">
 			<Label
 				class={`text-lg font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ${labelClass}`}

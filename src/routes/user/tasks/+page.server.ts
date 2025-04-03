@@ -68,6 +68,9 @@ export const actions: Actions = {
 			return fail(401, { message: 'User is not authorized.' });
 
 		const formData = await request.formData();
+
+		console.log(formData.get('done'));
+
 		const data = taskUpdateSchema.parse(formData);
 
 		const savedTask = await prisma.task.findUnique({
@@ -79,13 +82,16 @@ export const actions: Actions = {
 		if (!savedTask || savedTask.userEmail !== session.user.email)
 			return fail(403, { message: 'User does not have access to the task.' });
 
+		console.log(data);
+
 		await prisma.task.update({
 			where: {
 				id: data.id
 			},
 			data: {
 				name: data.name,
-				description: data.description
+				description: data.description,
+				done: data.done
 			}
 		});
 

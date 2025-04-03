@@ -16,5 +16,6 @@ export const taskDeleteSchema = zfd.formData({
 export const taskUpdateSchema = zfd.formData({
 	id: zfd.text(z.string().min(2)),
 	description: zfd.text(z.string().optional()),
-	name: zfd.text(nameSchema)
+	name: zfd.text(nameSchema),
+	done: zfd.text(z.string().transform((value) => value === 'true'))
 });
