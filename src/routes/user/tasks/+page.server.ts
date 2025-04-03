@@ -1,5 +1,6 @@
 import { simpleTaskSchema, taskDeleteSchema, taskUpdateSchema } from '$lib/schemas/task-schema';
 import prisma from '$lib/server/prisma';
+import taskService from '$lib/server/task-service';
 import { atStartOfDay } from '$lib/utils';
 import { fail, error, type Actions } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms';
@@ -33,11 +34,15 @@ export const actions: Actions = {
 		const session = await event.locals.auth();
 		if (!session || !session.user || !session.user.email) error(401, 'User is not authorized.');
 
+		const currentDate = atStartOfDay(new Date());
+		const order = await taskService.getNextOrder(session.user.email, currentDate);
+
 		await prisma.task.create({
 			data: {
 				name: form.data.name,
-				date: atStartOfDay(new Date()),
-				userEmail: session.user.email
+				date: currentDate,
+				userEmail: session.user.email,
+				order
 			}
 		});
 
