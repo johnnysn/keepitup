@@ -13,8 +13,6 @@
 	};
 
 	const { task }: Props = $props();
-
-	const labelClass = '';
 	let editMode = $state(false);
 
 	let form: HTMLFormElement;
@@ -33,6 +31,8 @@
 			clearTimeout(timeoutId);
 		}
 	});
+
+	const labelClass = $derived(`${task.done ? 'line-through' : ''}`);
 </script>
 
 <form
