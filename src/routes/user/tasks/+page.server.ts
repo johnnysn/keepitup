@@ -7,7 +7,16 @@ import { zod } from 'sveltekit-superforms/adapters';
 
 export async function load() {
 	return {
-		tasks: await prisma.task.findMany(),
+		tasks: await prisma.task.findMany({
+			orderBy: [
+				{
+					date: 'asc'
+				},
+				{
+					order: 'asc'
+				}
+			]
+		}),
 		form: await superValidate(zod(simpleTaskSchema))
 	};
 }
