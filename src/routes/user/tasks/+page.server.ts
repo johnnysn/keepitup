@@ -1,4 +1,9 @@
-import { simpleTaskSchema, taskDeleteSchema, taskUpdateSchema } from '$lib/schemas/task-schema';
+import {
+	simpleTaskSchema,
+	taskDeleteSchema,
+	taskOrderUpdateSchema,
+	taskUpdateSchema
+} from '$lib/schemas/task-schema';
 import prisma from '$lib/server/prisma';
 import taskService from '$lib/server/task-service';
 import { atStartOfDay } from '$lib/utils';
@@ -103,6 +108,20 @@ export const actions: Actions = {
 				done: data.done
 			}
 		});
+
+		return {
+			success: true
+		};
+	},
+	updateOrder: async ({ request, locals }) => {
+		const session = await locals.auth();
+		if (!session || !session.user || !session.user.email)
+			return fail(401, { message: 'User is not authorized.' });
+
+		const formData = await request.formData();
+		const data = taskOrderUpdateSchema.parse(formData);
+
+		taskService.updateTasksOrder(session.user.email, atStartOfDay(new Date()), data.ids);
 
 		return {
 			success: true

@@ -19,3 +19,12 @@ export const taskUpdateSchema = zfd.formData({
 	name: zfd.text(nameSchema),
 	done: zfd.text(z.string().transform((value) => value === 'true'))
 });
+
+const commaSeparatedIdsSchema = z.string().transform((input) => {
+	// Split the string by commas, remove any leading/trailing spaces from each ID
+	return input.split(',').map((id) => id.trim());
+});
+
+export const taskOrderUpdateSchema = zfd.formData({
+	ids: zfd.text(commaSeparatedIdsSchema)
+});
