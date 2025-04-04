@@ -12,7 +12,7 @@
 	function updatedOrder(items: string[]): void {
 		ids = items.join(',');
 
-		timeoutId = setTimeout(() => form.requestSubmit(), 200);
+		timeoutId = setTimeout(() => form.requestSubmit(), 100);
 	}
 
 	onDestroy(() => {
@@ -25,8 +25,9 @@
 <div class="flex flex-col items-center gap-4">
 	<SimpleTaskForm data={data.form} />
 
+	<TaskList items={data.tasks} onUpdatedOrder={updatedOrder} />
+
 	<form action="?/updateOrder" method="POST" bind:this={form} use:enhance>
 		<input type="hidden" name="ids" bind:value={ids} />
-		<TaskList items={data.tasks} onUpdatedOrder={updatedOrder} />
 	</form>
 </div>
