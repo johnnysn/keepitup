@@ -3,6 +3,10 @@
 	import Wrapper from '$lib/components/ui/Wrapper.svelte';
 	import { page } from '$app/state';
 	import { SignOut } from '@auth/sveltekit/components';
+	import { dateStrFromDate } from '$lib/utils';
+
+	const todayStr = dateStrFromDate(new Date());
+	const dailyLink = `/user/tasks/daily/${todayStr}`;
 </script>
 
 <header>
@@ -16,7 +20,7 @@
 			<LightSwitch />
 			<nav class="flex items-center gap-3">
 				{#if page.data.session}
-					<a href="/user/tasks">Tasks</a>
+					<a href={dailyLink}>Tasks</a>
 					<SignOut>
 						<span>Sign Out</span>
 					</SignOut>

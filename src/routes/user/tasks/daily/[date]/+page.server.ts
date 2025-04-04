@@ -6,14 +6,19 @@ import {
 } from '$lib/schemas/task-schema';
 import prisma from '$lib/server/prisma';
 import taskService from '$lib/server/task-service';
-import { atStartOfDay } from '$lib/utils';
+import { atStartOfDay, dateFromDateStr } from '$lib/utils';
 import { fail, error, type Actions } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
-export async function load() {
+export const load = async ({ params }) => {
+	const date = dateFromDateStr(params.date);
+
 	return {
 		tasks: await prisma.task.findMany({
+			where: {
+				date
+			},
 			orderBy: [
 				{
 					date: 'asc'
@@ -25,7 +30,7 @@ export async function load() {
 		}),
 		form: await superValidate(zod(simpleTaskSchema))
 	};
-}
+};
 
 export const actions: Actions = {
 	create: async (event) => {
@@ -36,16 +41,22 @@ export const actions: Actions = {
 			});
 		}
 
+		console.log(event.params);
+		console.log(form.data.date);
+		console.log(atStartOfDay(form.data.date ?? new Date()));
+
 		const session = await event.locals.auth();
 		if (!session || !session.user || !session.user.email) error(401, 'User is not authorized.');
 
-		const currentDate = atStartOfDay(new Date());
-		const order = await taskService.getNextOrder(session.user.email, currentDate);
+		const date = form.data.date
+			? atStartOfDay(form.data.date)
+			: dateFromDateStr(event.params.date!);
+		const order = await taskService.getNextOrder(session.user.email, date);
 
 		await prisma.task.create({
 			data: {
 				name: form.data.name,
-				date: currentDate,
+				date,
 				userEmail: session.user.email,
 				order
 			}

@@ -4,7 +4,8 @@ import { zfd } from 'zod-form-data';
 const nameSchema = z.string().min(2).max(100);
 
 export const simpleTaskSchema = z.object({
-	name: nameSchema
+	name: nameSchema,
+	date: z.optional(z.coerce.date())
 });
 
 export type SimpleTaskSchema = typeof simpleTaskSchema;
