@@ -9,7 +9,7 @@
 	import type { ActionResult } from '@sveltejs/kit';
 	import { invalidateAll, goto } from '$app/navigation';
 
-	let { data, form } = $props();
+	let { data } = $props();
 	let ids = $state('');
 	let formElem: HTMLFormElement;
 

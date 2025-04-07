@@ -3,8 +3,8 @@
 	import { Label } from '$lib/components/ui/label';
 	import { cn } from '$lib/utils';
 	import type { Task } from '@prisma/client';
-	import { Button } from './ui/button';
-	import { Trash2, ChevronsDown, ChevronsUp } from 'lucide-svelte';
+	import { Button, buttonVariants } from './ui/button';
+	import { Trash2, ChevronsDown, ChevronsUp, Edit } from 'lucide-svelte';
 	import { enhance } from '$app/forms';
 	import { onDestroy } from 'svelte';
 
@@ -100,7 +100,7 @@
 	</div>
 
 	{#if editMode}
-		<div class="mt-2 flex flex-col gap-1.5 pl-3">
+		<div class="mt-2 flex gap-1.5 pl-3">
 			<input
 				type="text"
 				name="description"
@@ -109,6 +109,12 @@
 				value={task.description}
 				onblur={() => form.requestSubmit()}
 			/>
+			<a
+				class={cn(buttonVariants({ variant: 'outline', size: 'icon' }))}
+				href={`/user/tasks/${task.id}`}
+			>
+				<Edit class="size-4" />
+			</a>
 		</div>
 	{/if}
 </form>
