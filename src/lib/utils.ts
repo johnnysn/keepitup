@@ -1,6 +1,6 @@
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
-import { number } from 'zod';
+import { browser } from '$app/environment';
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
@@ -26,7 +26,12 @@ export function dateStrFromDate(date: Date) {
 }
 
 export function formatDate(date: Date) {
-	const formatter = new Intl.DateTimeFormat(navigator.language, {
+	let lang = 'en';
+	if (browser) {
+		lang = navigator.language;
+	}
+
+	const formatter = new Intl.DateTimeFormat(lang, {
 		year: 'numeric',
 		month: '2-digit',
 		day: '2-digit',

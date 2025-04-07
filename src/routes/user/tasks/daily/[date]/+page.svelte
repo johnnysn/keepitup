@@ -1,30 +1,43 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
-	import { onDestroy } from 'svelte';
+	import { applyAction, deserialize } from '$app/forms';
 	import SimpleTaskForm from './simple-task-form.svelte';
 	import TaskList from './task-list.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import { page } from '$app/state';
 	import { ChevronLeft, ChevronRight } from 'lucide-svelte';
-	import { goto } from '$app/navigation';
 	import { dateFromDateStr, dateStrFromDate, formatDate } from '$lib/utils';
+	import type { ActionResult } from '@sveltejs/kit';
+	import { invalidateAll, goto } from '$app/navigation';
 
-	let { data } = $props();
+	let { data, form } = $props();
 	let ids = $state('');
-	let form: HTMLFormElement;
+	let formElem: HTMLFormElement;
 
-	let timeoutId: number | undefined;
 	function updatedOrder(items: string[]): void {
 		ids = items.join(',');
 
-		timeoutId = setTimeout(() => form.requestSubmit(), 50);
+		formElem.requestSubmit();
 	}
 
-	onDestroy(() => {
-		if (timeoutId) {
-			clearTimeout(timeoutId);
+	async function handleSubmit(
+		event: SubmitEvent & { currentTarget: EventTarget & HTMLFormElement }
+	) {
+		event.preventDefault();
+		const formData = new FormData();
+		formData.append('ids', ids);
+
+		const response = await fetch(event.currentTarget.action, {
+			method: 'POST',
+			body: formData
+		});
+		const result: ActionResult = deserialize(await response.text());
+
+		if (result.type === 'success') {
+			await invalidateAll();
 		}
-	});
+
+		applyAction(result);
+	}
 
 	function forward() {
 		const date = dateFromDateStr(page.params.date);
@@ -54,7 +67,5 @@
 
 	<TaskList items={data.tasks} onUpdatedOrder={updatedOrder} />
 
-	<form action="?/updateOrder" method="POST" bind:this={form} use:enhance>
-		<input type="hidden" name="ids" bind:value={ids} />
-	</form>
+	<form action="?/updateOrder" method="POST" bind:this={formElem} onsubmit={handleSubmit}></form>
 </div>

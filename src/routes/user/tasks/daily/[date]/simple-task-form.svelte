@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { page } from '$app/state';
 	import * as Form from '$lib/components/ui/form';
 	import { Input } from '$lib/components/ui/input';
 	import { simpleTaskSchema, type SimpleTaskSchema } from '$lib/schemas/task-schema';
