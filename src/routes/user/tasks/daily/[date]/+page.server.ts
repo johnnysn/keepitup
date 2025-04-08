@@ -41,10 +41,6 @@ export const actions: Actions = {
 			});
 		}
 
-		console.log(event.params);
-		console.log(form.data.date);
-		console.log(atStartOfDay(form.data.date ?? new Date()));
-
 		const session = await event.locals.auth();
 		if (!session || !session.user || !session.user.email) error(401, 'User is not authorized.');
 

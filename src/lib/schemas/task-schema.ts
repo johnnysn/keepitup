@@ -1,7 +1,12 @@
 import { z } from 'zod';
 import { zfd } from 'zod-form-data';
 
-const nameSchema = z.string().min(2).max(100);
+const nameSchema = z
+	.string()
+	.min(2, { message: 'Minimum 2 characters' })
+	.max(100, { message: 'Maximum 100 characters' });
+
+const descriptionSchema = z.optional(z.string().max(100, { message: 'Maximum 100 characters' }));
 
 export const simpleTaskSchema = z.object({
 	name: nameSchema,
@@ -9,6 +14,14 @@ export const simpleTaskSchema = z.object({
 });
 
 export type SimpleTaskSchema = typeof simpleTaskSchema;
+
+export const formTaskSchema = z.object({
+	name: nameSchema,
+	description: descriptionSchema,
+	date: z.string().refine((v) => v, { message: 'The date is required' })
+});
+
+export type FormTaskSchema = typeof formTaskSchema;
 
 export const taskDeleteSchema = zfd.formData({
 	id: zfd.text(z.string().min(2))
