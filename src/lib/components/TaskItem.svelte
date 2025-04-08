@@ -72,7 +72,7 @@
 				/>
 			</Label>
 		</div>
-		<div class="items-top flex w-[80px] gap-1">
+		<div class="items-top flex gap-1">
 			<Button
 				variant="outline"
 				size="icon"
@@ -87,20 +87,11 @@
 				{/if}
 			</Button>
 			<button type="submit" class="hidden">Update</button>
-			<Button
-				variant="outline"
-				size="icon"
-				type="submit"
-				formaction="?/delete"
-				disabled={isPosting}
-			>
-				<Trash2 class="size-4" />
-			</Button>
 		</div>
 	</div>
 
 	{#if editMode}
-		<div class="mt-2 flex gap-1.5 pl-3">
+		<div class="mt-2 flex flex-col gap-1.5 pl-3">
 			<input
 				type="text"
 				name="description"
@@ -109,12 +100,29 @@
 				value={task.description}
 				onblur={() => form.requestSubmit()}
 			/>
-			<a
-				class={cn(buttonVariants({ variant: 'outline', size: 'icon' }))}
-				href={`/user/tasks/${task.id}`}
-			>
-				<Edit class="size-4" />
-			</a>
+			<div class="flex justify-end gap-1.5">
+				<a
+					class={cn(
+						'flex items-center gap-1.5',
+						buttonVariants({ variant: 'outline', size: 'sm' })
+					)}
+					href={`/user/tasks/${task.id}`}
+				>
+					<Edit class="size-4" />
+					<span>Edit task</span>
+				</a>
+				<Button
+					variant="outline"
+					size="sm"
+					type="submit"
+					formaction="?/delete"
+					disabled={isPosting}
+					class="flex items-center gap-1.5"
+				>
+					<Trash2 class="size-4" />
+					<span>Delete task</span>
+				</Button>
+			</div>
 		</div>
 	{/if}
 </form>
