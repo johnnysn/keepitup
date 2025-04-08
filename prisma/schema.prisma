@@ -22,9 +22,10 @@ model User {
   accounts      Account[]
   sessions      Session[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  Task      Task[]
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  Task           Task[]
+  TaskPrototypes TaskPrototype[]
 }
 
 model Account {
@@ -77,4 +78,17 @@ model Task {
   user        User     @relation(fields: [userEmail], references: [email])
 
   @@index(fields: [userEmail, date, order])
+}
+
+model TaskPrototype {
+  id          String  @id @default(cuid())
+  name        String
+  description String?
+  weekDays    String
+  order       Int     @default(1)
+  userEmail   String
+  user        User    @relation(fields: [userEmail], references: [email])
+
+  @@unique([userEmail, name])
+  @@index(fields: [userEmail])
 }
