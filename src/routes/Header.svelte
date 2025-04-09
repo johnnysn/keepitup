@@ -4,6 +4,7 @@
 	import { page } from '$app/state';
 	import { SignOut } from '@auth/sveltekit/components';
 	import { dateStrFromDate } from '$lib/utils';
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 
 	const todayStr = dateStrFromDate(new Date());
 	const dailyLink = `/user/tasks/daily/${todayStr}`;
@@ -20,7 +21,18 @@
 			<LightSwitch />
 			<nav class="flex items-center gap-3">
 				{#if page.data.session}
-					<a href={dailyLink}>Tasks</a>
+					<DropdownMenu.Root>
+						<DropdownMenu.Trigger>Tasks</DropdownMenu.Trigger>
+						<DropdownMenu.Content>
+							<DropdownMenu.Group>
+								<DropdownMenu.Item><a href={dailyLink}>Daily tasks</a></DropdownMenu.Item>
+								<DropdownMenu.Item
+									><a href={'/user/tasks/prototypes'}>Recurrent tasks</a></DropdownMenu.Item
+								>
+							</DropdownMenu.Group>
+						</DropdownMenu.Content>
+					</DropdownMenu.Root>
+
 					<SignOut>
 						<span>Sign Out</span>
 					</SignOut>
