@@ -1,22 +1,22 @@
 <script lang="ts">
 	import { flip } from 'svelte/animate';
 	import { dragHandleZone, dragHandle, type DndEvent } from 'svelte-dnd-action';
-	import type { Task } from '@prisma/client';
-	import TaskItem from './task-item.svelte';
+	import type { TaskPrototype } from '@prisma/client';
 	import { GripVertical } from 'lucide-svelte';
+	import PrototypeItem from './prototype-item.svelte';
 
 	type Props = {
-		items: Task[];
+		items: TaskPrototype[];
 		onUpdatedOrder: (items: string[]) => void;
 	};
 
 	let { items, onUpdatedOrder }: Props = $props();
 
 	const flipDurationMs = 300;
-	function handleDndConsider(e: CustomEvent<DndEvent<Task>>) {
+	function handleDndConsider(e: CustomEvent<DndEvent<TaskPrototype>>) {
 		items = e.detail.items;
 	}
-	function handleDndFinalize(e: CustomEvent<DndEvent<Task>>) {
+	function handleDndFinalize(e: CustomEvent<DndEvent<TaskPrototype>>) {
 		items = e.detail.items;
 		onUpdatedOrder(items.map((i) => i.id));
 	}
@@ -36,7 +36,7 @@
 			<div use:dragHandle class="mx-1 text-foreground/50 hover:text-foreground">
 				<GripVertical class="size-6" />
 			</div>
-			<TaskItem task={item} />
+			<PrototypeItem prototype={item} />
 		</li>
 	{/each}
 </ul>

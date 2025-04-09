@@ -1,13 +1,14 @@
 <script lang="ts">
 	import FormPrototype from './form-prototype.svelte';
+	import PrototypeList from './prototype-list.svelte';
 
 	let { data } = $props();
+
+	function updatedOrder(items: string[]): void {
+		throw new Error('Function not implemented.');
+	}
 </script>
 
 <FormPrototype data={data.form} />
 
-<ul class="mt-4 flex flex-col items-center gap-2">
-	{#each data.protos as proto}
-		<li class="w-full rounded bg-foreground/10 p-1">{proto.name}</li>
-	{/each}
-</ul>
+<PrototypeList items={data.protos} onUpdatedOrder={updatedOrder} />

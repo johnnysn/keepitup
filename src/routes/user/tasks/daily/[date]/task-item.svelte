@@ -3,7 +3,7 @@
 	import { Label } from '$lib/components/ui/label';
 	import { cn } from '$lib/utils';
 	import type { Task } from '@prisma/client';
-	import { Button, buttonVariants } from './ui/button';
+	import { Button, buttonVariants } from '../../../../../lib/components/ui/button';
 	import { Trash2, ChevronsDown, ChevronsUp, Edit } from 'lucide-svelte';
 	import { enhance } from '$app/forms';
 	import { onDestroy } from 'svelte';

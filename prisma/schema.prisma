@@ -89,6 +89,6 @@ model TaskPrototype {
   userEmail   String
   user        User    @relation(fields: [userEmail], references: [email])
 
-  @@unique([userEmail, name])
+  @@unique([userEmail, name], name: "prismaislame")
   @@index(fields: [userEmail])
 }

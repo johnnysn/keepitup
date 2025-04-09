@@ -2,7 +2,7 @@ import prisma from '$lib/server/prisma.js';
 import { error, type Actions } from '@sveltejs/kit';
 import { superValidate, fail } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
-import { prototypeFormSchema } from '$lib/schemas/prototype-schema';
+import { prototypeDeleteSchema, prototypeFormSchema } from '$lib/schemas/prototype-schema';
 
 export const load = async ({ locals }) => {
 	const session = await locals.auth();
@@ -40,14 +40,18 @@ export const actions: Actions = {
 
 		const existing = await prisma.taskPrototype.findUnique({
 			where: {
-				name: form.data.name,
-				userEmail: session.user.email
+				prismaislame: {
+					name: form.data.name,
+					userEmail: session.user.email
+				}
 			}
 		});
 
 		if (existing) {
 			error(400, 'Task name already exists.');
 		}
+
+		// console.log(form.data);
 
 		const weekDays = [
 			form.data.sunday ? '1' : '0',
@@ -58,6 +62,8 @@ export const actions: Actions = {
 			form.data.friday ? '1' : '0',
 			form.data.saturday ? '1' : '0'
 		].join('');
+
+		// if (weekDays === '0000000') error(400, 'You should select at least one week day');
 
 		await prisma.taskPrototype.create({
 			data: {
@@ -70,6 +76,32 @@ export const actions: Actions = {
 
 		return {
 			form
+		};
+	},
+	delete: async ({ request, locals }) => {
+		const session = await locals.auth();
+		if (!session || !session.user || !session.user.email) error(401, 'User is not authorized.');
+
+		const formData = await request.formData();
+		const data = prototypeDeleteSchema.parse(formData);
+
+		const prototype = await prisma.taskPrototype.findUnique({
+			where: {
+				id: data.id
+			}
+		});
+
+		if (!prototype || prototype.userEmail !== session.user.email)
+			return fail(403, { message: 'User does not have access to the prototype.' });
+
+		await prisma.taskPrototype.delete({
+			where: {
+				id: data.id
+			}
+		});
+
+		return {
+			success: true
 		};
 	}
 };

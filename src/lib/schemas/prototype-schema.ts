@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { zfd } from 'zod-form-data';
 
 export const prototypeFormSchema = z.object({
 	name: z.string().min(2).max(100),
@@ -13,3 +14,7 @@ export const prototypeFormSchema = z.object({
 });
 
 export type PrototypeFormSchema = typeof prototypeFormSchema;
+
+export const prototypeDeleteSchema = zfd.formData({
+	id: zfd.text(z.string().min(2))
+});
