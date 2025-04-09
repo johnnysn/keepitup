@@ -90,8 +90,8 @@
 		</div>
 	</div>
 
-	{#if editMode}
-		<div class="mt-2 flex flex-col gap-1.5 pl-3">
+	<div class="mt-0.5 flex flex-col gap-1.5 pl-3">
+		{#if editMode || (task.description && task.description.length > 0)}
 			<input
 				type="text"
 				name="description"
@@ -100,6 +100,8 @@
 				value={task.description}
 				onblur={() => form.requestSubmit()}
 			/>
+		{/if}
+		{#if editMode}
 			<div class="flex justify-end gap-1.5">
 				<a
 					class={cn(
@@ -123,6 +125,6 @@
 					<span>Delete task</span>
 				</Button>
 			</div>
-		</div>
-	{/if}
+		{/if}
+	</div>
 </form>
