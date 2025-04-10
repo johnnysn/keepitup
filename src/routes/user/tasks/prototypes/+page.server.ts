@@ -2,7 +2,12 @@ import prisma from '$lib/server/prisma.js';
 import { error, type Actions } from '@sveltejs/kit';
 import { superValidate, fail } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
-import { prototypeDeleteSchema, prototypeFormSchema } from '$lib/schemas/prototype-schema';
+import {
+	prototypeDeleteSchema,
+	prototypeFormSchema,
+	prototypeOrderUpdateSchema
+} from '$lib/schemas/prototype-schema';
+import { prototypeService } from '$lib/server/prototype-service.js';
 
 export const load = async ({ locals }) => {
 	const session = await locals.auth();
@@ -65,12 +70,15 @@ export const actions: Actions = {
 
 		// if (weekDays === '0000000') error(400, 'You should select at least one week day');
 
+		const order = await prototypeService.getNextOrder(session.user.email);
+
 		await prisma.taskPrototype.create({
 			data: {
 				name: form.data.name,
 				description: form.data.description,
 				weekDays,
-				userEmail: session.user.email
+				userEmail: session.user.email,
+				order
 			}
 		});
 
@@ -92,13 +100,30 @@ export const actions: Actions = {
 		});
 
 		if (!prototype || prototype.userEmail !== session.user.email)
-			return fail(403, { message: 'User does not have access to the prototype.' });
+			error(403, 'User does not have access to the prototype');
 
 		await prisma.taskPrototype.delete({
 			where: {
 				id: data.id
 			}
 		});
+
+		return {
+			success: true
+		};
+	},
+	updateOrder: async ({ request, locals, params }) => {
+		const session = await locals.auth();
+		if (!session || !session.user || !session.user.email) error(401, 'User is not authorized');
+
+		const formData = await request.formData();
+		const data = prototypeOrderUpdateSchema.parse(formData);
+
+		try {
+			await prototypeService.updatePrototypesOrder(session.user.email, data.ids);
+		} catch (err) {
+			error(400, 'There has been a problem when updating the order of prototypes');
+		}
 
 		return {
 			success: true

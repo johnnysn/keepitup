@@ -76,7 +76,7 @@ export const actions: Actions = {
 		});
 
 		if (!savedTask || savedTask.userEmail !== session.user.email)
-			return fail(403, { message: 'User does not have access to the task.' });
+			error(403, 'User does not have access to the task');
 
 		await prisma.task.delete({
 			where: {
@@ -90,8 +90,7 @@ export const actions: Actions = {
 	},
 	update: async ({ request, locals }) => {
 		const session = await locals.auth();
-		if (!session || !session.user || !session.user.email)
-			return fail(401, { message: 'User is not authorized.' });
+		if (!session || !session.user || !session.user.email) error(401, 'User is not authorized');
 
 		const formData = await request.formData();
 		const data = taskUpdateSchema.parse(formData);
@@ -103,7 +102,7 @@ export const actions: Actions = {
 		});
 
 		if (!savedTask || savedTask.userEmail !== session.user.email)
-			return fail(403, { message: 'User does not have access to the task.' });
+			error(403, 'User does not have access to the task');
 
 		await prisma.task.update({
 			where: {
@@ -120,15 +119,22 @@ export const actions: Actions = {
 			success: true
 		};
 	},
-	updateOrder: async ({ request, locals }) => {
+	updateOrder: async ({ request, locals, params }) => {
 		const session = await locals.auth();
-		if (!session || !session.user || !session.user.email)
-			return fail(401, { message: 'User is not authorized.' });
+		if (!session || !session.user || !session.user.email) error(401, 'User is not authorized');
 
 		const formData = await request.formData();
 		const data = taskOrderUpdateSchema.parse(formData);
 
-		taskService.updateTasksOrder(session.user.email, atStartOfDay(new Date()), data.ids);
+		try {
+			await taskService.updateTasksOrder(
+				session.user.email,
+				dateFromDateStr(params.date!),
+				data.ids
+			);
+		} catch (err) {
+			error(400, 'There has been a problem when updating the order of tasks');
+		}
 
 		return {
 			success: true
