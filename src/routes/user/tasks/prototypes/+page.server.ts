@@ -56,19 +56,7 @@ export const actions: Actions = {
 			error(400, 'Task name already exists.');
 		}
 
-		// console.log(form.data);
-
-		const weekDays = [
-			form.data.sunday ? '1' : '0',
-			form.data.monday ? '1' : '0',
-			form.data.tuesday ? '1' : '0',
-			form.data.wednesday ? '1' : '0',
-			form.data.thursday ? '1' : '0',
-			form.data.friday ? '1' : '0',
-			form.data.saturday ? '1' : '0'
-		].join('');
-
-		// if (weekDays === '0000000') error(400, 'You should select at least one week day');
+		if (form.data.weekDays === '0000000') error(400, 'You should select at least one week day');
 
 		const order = await prototypeService.getNextOrder(session.user.email);
 
@@ -76,7 +64,7 @@ export const actions: Actions = {
 			data: {
 				name: form.data.name,
 				description: form.data.description,
-				weekDays,
+				weekDays: form.data.weekDays,
 				userEmail: session.user.email,
 				order
 			}

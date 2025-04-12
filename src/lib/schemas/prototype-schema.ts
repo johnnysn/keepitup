@@ -4,13 +4,7 @@ import { zfd } from 'zod-form-data';
 export const prototypeFormSchema = z.object({
 	name: z.string().min(2).max(100),
 	description: z.optional(z.string().max(100)),
-	sunday: z.boolean().default(false),
-	monday: z.boolean().default(false),
-	tuesday: z.boolean().default(false),
-	wednesday: z.boolean().default(false),
-	thursday: z.boolean().default(false),
-	friday: z.boolean().default(false),
-	saturday: z.boolean().default(false)
+	weekDays: z.string().regex(/[01]{7}/)
 });
 
 export type PrototypeFormSchema = typeof prototypeFormSchema;

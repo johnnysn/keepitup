@@ -7,6 +7,8 @@
 	import SuperDebug, { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 	import { browser } from '$app/environment';
+	import { Control } from 'formsnap';
+	import { Label } from '$lib/components/ui/label';
 
 	type Props = {
 		data: SuperValidated<Infer<PrototypeFormSchema>>;
@@ -27,6 +29,17 @@
 	});
 
 	const { form: formData, enhance } = form;
+
+	function checkedChanged(pos: number, value: boolean): void {
+		formData.update((current) => {
+			let wd = '0000000';
+			if (current.weekDays && current.weekDays.length === 7) wd = current.weekDays;
+
+			wd = wd.slice(0, pos) + (value ? '1' : '0') + wd.slice(pos + 1);
+
+			return { ...current, weekDays: wd };
+		});
+	}
 </script>
 
 <form method="POST" class="w-full max-w-screen-sm" action="?/create" use:enhance>
@@ -54,88 +67,63 @@
 		</div>
 	</Form.Field>
 
+	<Form.Field {form} name="weekDays">
+		<Form.Control let:attrs>
+			<Input {...attrs} type="hidden" bind:value={$formData.weekDays} />
+		</Form.Control>
+	</Form.Field>
+
 	<div class="mb-4 flex flex-wrap space-x-6">
-		<Form.Field {form} name="monday" class="mb-2 flex items-center gap-2 space-y-0">
-			<Form.Control>
-				{#snippet children({ props })}
-					<Checkbox {...props} bind:checked={$formData.monday} />
-					<div class="space-y-1 leading-none">
-						<Form.Label>Monday</Form.Label>
-					</div>
-				{/snippet}
-			</Form.Control>
-		</Form.Field>
-		<Form.Field {form} name="tuesday" class="mb-2 flex items-center gap-2 space-y-0">
-			<Form.Control>
-				{#snippet children({ props })}
-					<Checkbox {...props} bind:checked={$formData.tuesday} />
-					<div class="space-y-1 leading-none">
-						<Form.Label>Tuesday</Form.Label>
-					</div>
-				{/snippet}
-			</Form.Control>
-		</Form.Field>
-		<Form.Field {form} name="wednesday" class="mb-2 flex items-center gap-2 space-y-0">
-			<Form.Control>
-				{#snippet children({ props })}
-					<Checkbox {...props} bind:checked={$formData.wednesday} />
-					<div class="space-y-1 leading-none">
-						<Form.Label>Wednesday</Form.Label>
-					</div>
-				{/snippet}
-			</Form.Control>
-		</Form.Field>
-		<Form.Field {form} name="thursday" class="mb-2 flex items-center gap-2 space-y-0">
-			<Form.Control>
-				{#snippet children({ props })}
-					<Checkbox {...props} bind:checked={$formData.thursday} />
-					<div class="space-y-1 leading-none">
-						<Form.Label>Thursday</Form.Label>
-					</div>
-				{/snippet}
-			</Form.Control>
-		</Form.Field>
-		<Form.Field {form} name="friday" class="mb-2 flex items-center gap-2 space-y-0">
-			<Form.Control>
-				{#snippet children({ props })}
-					<Checkbox {...props} bind:checked={$formData.friday} />
-					<div class="space-y-1 leading-none">
-						<Form.Label>Friday</Form.Label>
-					</div>
-				{/snippet}
-			</Form.Control>
-		</Form.Field>
+		<div class="mb-2 flex items-center gap-2 space-y-0">
+			<Checkbox id="chk_mon" onCheckedChange={(checked) => checkedChanged(1, !!checked)} />
+			<div class="space-y-1 leading-none">
+				<Label for="chk_mon">Monday</Label>
+			</div>
+		</div>
+
+		<div class="mb-2 flex items-center gap-2 space-y-0">
+			<Checkbox id="chk_tue" onCheckedChange={(checked) => checkedChanged(2, !!checked)} />
+			<div class="space-y-1 leading-none">
+				<Label for="chk_tue">Tuesday</Label>
+			</div>
+		</div>
+
+		<div class="mb-2 flex items-center gap-2 space-y-0">
+			<Checkbox id="chk_wed" onCheckedChange={(checked) => checkedChanged(3, !!checked)} />
+			<div class="space-y-1 leading-none">
+				<Label for="chk_wed">Wednesday</Label>
+			</div>
+		</div>
+
+		<div class="mb-2 flex items-center gap-2 space-y-0">
+			<Checkbox id="chk_thu" onCheckedChange={(checked) => checkedChanged(4, !!checked)} />
+			<div class="space-y-1 leading-none">
+				<Label for="chk_thu">Thursday</Label>
+			</div>
+		</div>
+
+		<div class="mb-2 flex items-center gap-2 space-y-0">
+			<Checkbox id="chk_fri" onCheckedChange={(checked) => checkedChanged(5, !!checked)} />
+			<div class="space-y-1 leading-none">
+				<Label for="chk_fri">Friday</Label>
+			</div>
+		</div>
 	</div>
 
 	<div class="flex flex-wrap gap-6">
-		<Form.Field
-			{form}
-			name="saturday"
-			class="flex flex-row items-start space-x-2 space-y-0 rounded-md"
-		>
-			<Form.Control>
-				{#snippet children({ props })}
-					<Checkbox {...props} bind:checked={$formData.saturday} />
-					<div class="space-y-1 leading-none">
-						<Form.Label>Saturday</Form.Label>
-					</div>
-				{/snippet}
-			</Form.Control>
-		</Form.Field>
-		<Form.Field
-			{form}
-			name="sunday"
-			class="flex flex-row items-start space-x-2 space-y-0 rounded-md"
-		>
-			<Form.Control>
-				{#snippet children({ props })}
-					<Checkbox {...props} bind:checked={$formData.sunday} />
-					<div class="space-y-1 leading-none">
-						<Form.Label>Sunday</Form.Label>
-					</div>
-				{/snippet}
-			</Form.Control>
-		</Form.Field>
+		<div class="mb-2 flex items-center gap-2 space-y-0">
+			<Checkbox id="chk_sat" onCheckedChange={(checked) => checkedChanged(7, !!checked)} />
+			<div class="space-y-1 leading-none">
+				<Label for="chk_sat">Saturday</Label>
+			</div>
+		</div>
+
+		<div class="mb-2 flex items-center gap-2 space-y-0">
+			<Checkbox id="chk_sun" onCheckedChange={(checked) => checkedChanged(0, !!checked)} />
+			<div class="space-y-1 leading-none">
+				<Label for="chk_sun">Sunday</Label>
+			</div>
+		</div>
 	</div>
 
 	<Form.Button class="mt-4 w-full">Create recurrent task</Form.Button>
