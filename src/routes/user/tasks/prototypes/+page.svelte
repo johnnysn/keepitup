@@ -36,8 +36,10 @@
 	}
 </script>
 
-<FormPrototype data={data.form} />
+<div class="flex flex-col items-center gap-4">
+	<FormPrototype data={data.form} />
 
-<PrototypeList items={data.protos} onUpdatedOrder={updatedOrder} />
+	<PrototypeList items={data.protos} onUpdatedOrder={updatedOrder} />
 
-<form action="?/updateOrder" method="POST" bind:this={formElem} onsubmit={handleSubmit}></form>
+	<form action="?/updateOrder" method="POST" bind:this={formElem} onsubmit={handleSubmit}></form>
+</div>

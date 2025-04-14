@@ -5,7 +5,8 @@ import { zod } from 'sveltekit-superforms/adapters';
 import {
 	prototypeDeleteSchema,
 	prototypeFormSchema,
-	prototypeOrderUpdateSchema
+	prototypeOrderUpdateSchema,
+	prototypeSimpleUpdateSchema
 } from '$lib/schemas/prototype-schema';
 import { prototypeService } from '$lib/server/prototype-service.js';
 
@@ -93,6 +94,37 @@ export const actions: Actions = {
 		await prisma.taskPrototype.delete({
 			where: {
 				id: data.id
+			}
+		});
+
+		return {
+			success: true
+		};
+	},
+	simpleUpdate: async ({ request, locals }) => {
+		const session = await locals.auth();
+		if (!session || !session.user || !session.user.email) error(401, 'User is not authorized.');
+
+		const formData = await request.formData();
+		const data = prototypeSimpleUpdateSchema.parse(formData);
+
+		const prototype = await prisma.taskPrototype.findUnique({
+			where: {
+				id: data.id
+			}
+		});
+
+		if (!prototype || prototype.userEmail !== session.user.email)
+			error(403, 'User does not have access to the prototype');
+
+		await prisma.taskPrototype.update({
+			where: {
+				id: data.id
+			},
+			data: {
+				name: data.name,
+				description: data.description,
+				weekDays: data.weekDays
 			}
 		});
 

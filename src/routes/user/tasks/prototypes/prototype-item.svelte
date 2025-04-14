@@ -15,10 +15,12 @@
 	let isPosting = $state(false);
 	let editMode = $state(false);
 	let form: HTMLFormElement;
+
+	let weekDays = $state(prototype.weekDays);
 </script>
 
 <form
-	action="?/update"
+	action="?/simpleUpdate"
 	method="POST"
 	class="flex w-full flex-col px-2 py-1"
 	bind:this={form}
@@ -37,7 +39,7 @@
 >
 	<input type="hidden" name="id" value={prototype.id} />
 	<div class="flex w-full items-center space-x-2">
-		<div class="grid flex-1 items-center gap-1.5 leading-none">
+		<div class="flex-1 leading-none">
 			<Label
 				class={`text-lg font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70`}
 			>
@@ -49,8 +51,10 @@
 					)}
 					value={prototype.name}
 					onblur={() => form.requestSubmit()}
+					required
 				/>
 			</Label>
+			<input type="hidden" name="weekDays" bind:value={weekDays} />
 		</div>
 		<div class="items-top flex gap-1">
 			<Button
