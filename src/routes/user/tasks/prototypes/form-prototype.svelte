@@ -4,10 +4,8 @@
 	import { Input } from '$lib/components/ui/input';
 	import { prototypeFormSchema, type PrototypeFormSchema } from '$lib/schemas/prototype-schema';
 	import { toast } from 'svelte-sonner';
-	import SuperDebug, { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
+	import { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
-	import { browser } from '$app/environment';
-	import { Control } from 'formsnap';
 	import { Label } from '$lib/components/ui/label';
 
 	type Props = {
@@ -127,8 +125,4 @@
 	</div>
 
 	<Form.Button class="mt-4 w-full">Create recurrent task</Form.Button>
-
-	{#if browser}
-		<SuperDebug data={$formData} />
-	{/if}
 </form>

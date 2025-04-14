@@ -5,6 +5,8 @@
 	import { cn } from '$lib/utils';
 	import type { TaskPrototype } from '@prisma/client';
 	import { ChevronsDown, ChevronsUp, Edit, Trash2 } from 'lucide-svelte';
+	import WeekdaysMarker from './weekdays-marker.svelte';
+	import { onDestroy } from 'svelte';
 
 	type Props = {
 		prototype: TaskPrototype;
@@ -17,6 +19,16 @@
 	let form: HTMLFormElement;
 
 	let weekDays = $state(prototype.weekDays);
+
+	let timeoutId: number | undefined;
+	function checkChangedHandler(day: number, value: boolean): void {
+		weekDays = weekDays.slice(0, day) + (value ? '1' : '0') + weekDays.slice(day + 1);
+		timeoutId = setTimeout(() => form.requestSubmit(), 50);
+	}
+
+	onDestroy(() => {
+		if (timeoutId) clearTimeout(timeoutId);
+	});
 </script>
 
 <form
@@ -86,28 +98,31 @@
 			/>
 		{/if}
 		{#if editMode}
-			<div class="flex justify-end gap-1.5">
-				<a
-					class={cn(
-						'flex items-center gap-1.5',
-						buttonVariants({ variant: 'outline', size: 'sm' })
-					)}
-					href={`/user/tasks/${prototype.id}`}
-				>
-					<Edit class="size-4" />
-					<span>Advanced edit</span>
-				</a>
-				<Button
-					variant="outline"
-					size="sm"
-					type="submit"
-					formaction="?/delete"
-					disabled={isPosting}
-					class="flex items-center gap-1.5"
-				>
-					<Trash2 class="size-4" />
-					<span>Delete rec. task</span>
-				</Button>
+			<div class="flex flex-col">
+				<WeekdaysMarker weekDays={prototype.weekDays} onCheckChanged={checkChangedHandler} />
+				<div class="flex justify-end gap-1.5">
+					<a
+						class={cn(
+							'flex items-center gap-1.5',
+							buttonVariants({ variant: 'outline', size: 'sm' })
+						)}
+						href={`/user/tasks/${prototype.id}`}
+					>
+						<Edit class="size-4" />
+						<span>Advanced edit</span>
+					</a>
+					<Button
+						variant="outline"
+						size="sm"
+						type="submit"
+						formaction="?/delete"
+						disabled={isPosting}
+						class="flex items-center gap-1.5"
+					>
+						<Trash2 class="size-4" />
+						<span>Delete rec. task</span>
+					</Button>
+				</div>
 			</div>
 		{/if}
 	</div>
