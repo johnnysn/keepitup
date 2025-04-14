@@ -4,20 +4,31 @@ import {
 	taskOrderUpdateSchema,
 	taskUpdateSchema
 } from '$lib/schemas/task-schema';
+import { dailyRoutineService } from '$lib/server/daily-routine-service.js';
 import prisma from '$lib/server/prisma';
 import taskService from '$lib/server/task-service';
-import { atStartOfDay, dateFromDateStr } from '$lib/utils';
+import { atStartOfDay, dateFromDateStr, dateStrFromDate } from '$lib/utils';
 import { error, type Actions } from '@sveltejs/kit';
 import { superValidate, fail } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
-export const load = async ({ params }) => {
+export const load = async ({ params, locals }) => {
 	const date = dateFromDateStr(params.date);
+	const session = await locals.auth();
+
+	if (!session || !session.user || !session.user.email) error(401, 'User is not authorized.');
+	const userEmail = session.user.email;
+
+	if (params.date === dateStrFromDate(new Date())) {
+		// console.log('Generating recurrent tasks');
+		await dailyRoutineService.generateForDate(userEmail, new Date());
+	}
 
 	return {
 		tasks: await prisma.task.findMany({
 			where: {
-				date
+				date,
+				userEmail
 			},
 			orderBy: [
 				{

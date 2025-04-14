@@ -24,8 +24,9 @@ model User {
 
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt
-  Task           Task[]
-  TaskPrototypes TaskPrototype[]
+  tasks          Task[]
+  taskPrototypes TaskPrototype[]
+  dailyRoutines  DailyRoutine[]
 }
 
 model Account {
@@ -91,4 +92,15 @@ model TaskPrototype {
 
   @@unique([userEmail, name], name: "prismaislame")
   @@index(fields: [userEmail])
+}
+
+model DailyRoutine {
+  id        String  @id @default(cuid())
+  dateStr   String
+  executed  Boolean
+  userEmail String
+  user      User    @relation(fields: [userEmail], references: [email])
+
+  @@unique([userEmail, dateStr], name: "prismaislame")
+  @@index(fields: [userEmail, dateStr])
 }

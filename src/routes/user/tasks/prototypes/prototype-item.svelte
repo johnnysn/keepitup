@@ -2,7 +2,7 @@
 	import { enhance } from '$app/forms';
 	import { Button, buttonVariants } from '$lib/components/ui/button';
 	import { Label } from '$lib/components/ui/label';
-	import { cn } from '$lib/utils';
+	import { cn, formatWeekDay } from '$lib/utils';
 	import type { TaskPrototype } from '@prisma/client';
 	import { ChevronsDown, ChevronsUp, Edit, Trash2 } from 'lucide-svelte';
 	import WeekdaysMarker from './weekdays-marker.svelte';
@@ -22,7 +22,7 @@
 
 	let timeoutId: number | undefined;
 	function checkChangedHandler(day: number, value: boolean): void {
-		weekDays = weekDays.slice(0, day) + (value ? '1' : '0') + weekDays.slice(day + 1);
+		weekDays = formatWeekDay(weekDays, day, value);
 		timeoutId = setTimeout(() => form.requestSubmit(), 50);
 	}
 

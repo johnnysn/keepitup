@@ -89,3 +89,12 @@ export function formatDate(date: Date) {
 	});
 	return formatter.format(date);
 }
+
+export function formatWeekDay(startingStr: string, pos: number, value: boolean) {
+	let wd = '0000000';
+	if (startingStr && startingStr.length === 7) wd = startingStr;
+
+	wd = wd.slice(0, pos) + (value ? '1' : '0') + (pos < 6 ? wd.slice(pos + 1) : '');
+
+	return wd;
+}

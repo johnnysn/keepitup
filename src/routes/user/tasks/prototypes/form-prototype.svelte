@@ -7,6 +7,7 @@
 	import { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 	import { Label } from '$lib/components/ui/label';
+	import { formatWeekDay } from '$lib/utils';
 
 	type Props = {
 		data: SuperValidated<Infer<PrototypeFormSchema>>;
@@ -30,10 +31,8 @@
 
 	function checkedChanged(pos: number, value: boolean): void {
 		formData.update((current) => {
-			let wd = '0000000';
-			if (current.weekDays && current.weekDays.length === 7) wd = current.weekDays;
-
-			wd = wd.slice(0, pos) + (value ? '1' : '0') + wd.slice(pos + 1);
+			let wd = formatWeekDay(current.weekDays, pos, value);
+			console.log(wd);
 
 			return { ...current, weekDays: wd };
 		});
@@ -110,7 +109,7 @@
 
 	<div class="flex flex-wrap gap-6">
 		<div class="mb-2 flex items-center gap-2 space-y-0">
-			<Checkbox id="chk_sat" onCheckedChange={(checked) => checkedChanged(7, !!checked)} />
+			<Checkbox id="chk_sat" onCheckedChange={(checked) => checkedChanged(6, !!checked)} />
 			<div class="space-y-1 leading-none">
 				<Label for="chk_sat">Saturday</Label>
 			</div>

@@ -57,6 +57,7 @@ export const actions: Actions = {
 			error(400, 'Task name already exists.');
 		}
 
+		// console.log(form.data.weekDays);
 		if (form.data.weekDays === '0000000') error(400, 'You should select at least one week day');
 
 		const order = await prototypeService.getNextOrder(session.user.email);
