@@ -14,6 +14,7 @@
 	};
 
 	let { data }: Props = $props();
+	let checks = $state([false, false, false, false, false, false, false]);
 
 	const form = superForm(data, {
 		validators: zodClient(prototypeFormSchema),
@@ -24,6 +25,7 @@
 			if (form.valid) {
 				toast.success('Prototype successfully created!');
 			}
+			checks = [false, false, false, false, false, false, false];
 		}
 	});
 
@@ -72,35 +74,55 @@
 
 	<div class="mb-4 flex flex-wrap space-x-6">
 		<div class="mb-2 flex items-center gap-2 space-y-0">
-			<Checkbox id="chk_mon" onCheckedChange={(checked) => checkedChanged(1, !!checked)} />
+			<Checkbox
+				id="chk_mon"
+				onCheckedChange={(checked) => checkedChanged(1, !!checked)}
+				bind:checked={checks[1]}
+			/>
 			<div class="space-y-1 leading-none">
 				<Label for="chk_mon">Monday</Label>
 			</div>
 		</div>
 
 		<div class="mb-2 flex items-center gap-2 space-y-0">
-			<Checkbox id="chk_tue" onCheckedChange={(checked) => checkedChanged(2, !!checked)} />
+			<Checkbox
+				id="chk_tue"
+				onCheckedChange={(checked) => checkedChanged(2, !!checked)}
+				bind:checked={checks[2]}
+			/>
 			<div class="space-y-1 leading-none">
 				<Label for="chk_tue">Tuesday</Label>
 			</div>
 		</div>
 
 		<div class="mb-2 flex items-center gap-2 space-y-0">
-			<Checkbox id="chk_wed" onCheckedChange={(checked) => checkedChanged(3, !!checked)} />
+			<Checkbox
+				id="chk_wed"
+				onCheckedChange={(checked) => checkedChanged(3, !!checked)}
+				bind:checked={checks[3]}
+			/>
 			<div class="space-y-1 leading-none">
 				<Label for="chk_wed">Wednesday</Label>
 			</div>
 		</div>
 
 		<div class="mb-2 flex items-center gap-2 space-y-0">
-			<Checkbox id="chk_thu" onCheckedChange={(checked) => checkedChanged(4, !!checked)} />
+			<Checkbox
+				id="chk_thu"
+				onCheckedChange={(checked) => checkedChanged(4, !!checked)}
+				bind:checked={checks[4]}
+			/>
 			<div class="space-y-1 leading-none">
 				<Label for="chk_thu">Thursday</Label>
 			</div>
 		</div>
 
 		<div class="mb-2 flex items-center gap-2 space-y-0">
-			<Checkbox id="chk_fri" onCheckedChange={(checked) => checkedChanged(5, !!checked)} />
+			<Checkbox
+				id="chk_fri"
+				onCheckedChange={(checked) => checkedChanged(5, !!checked)}
+				bind:checked={checks[5]}
+			/>
 			<div class="space-y-1 leading-none">
 				<Label for="chk_fri">Friday</Label>
 			</div>
@@ -109,14 +131,22 @@
 
 	<div class="flex flex-wrap gap-6">
 		<div class="mb-2 flex items-center gap-2 space-y-0">
-			<Checkbox id="chk_sat" onCheckedChange={(checked) => checkedChanged(6, !!checked)} />
+			<Checkbox
+				id="chk_sat"
+				onCheckedChange={(checked) => checkedChanged(6, !!checked)}
+				bind:checked={checks[6]}
+			/>
 			<div class="space-y-1 leading-none">
 				<Label for="chk_sat">Saturday</Label>
 			</div>
 		</div>
 
 		<div class="mb-2 flex items-center gap-2 space-y-0">
-			<Checkbox id="chk_sun" onCheckedChange={(checked) => checkedChanged(0, !!checked)} />
+			<Checkbox
+				id="chk_sun"
+				onCheckedChange={(checked) => checkedChanged(0, !!checked)}
+				bind:checked={checks[0]}
+			/>
 			<div class="space-y-1 leading-none">
 				<Label for="chk_sun">Sunday</Label>
 			</div>

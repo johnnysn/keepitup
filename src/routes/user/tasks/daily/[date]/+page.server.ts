@@ -121,7 +121,7 @@ export const actions: Actions = {
 			},
 			data: {
 				name: data.name,
-				description: data.description,
+				description: data.description ?? '',
 				done: data.done
 			}
 		});

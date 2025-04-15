@@ -4,6 +4,8 @@
 	let { data } = $props();
 </script>
 
-<h1 class="mb-4 text-2xl font-semibold">Edit task</h1>
+<div class="flex w-full flex-col items-center">
+	<h1 class="mb-4 text-2xl font-semibold">Edit task</h1>
 
-<TaskForm data={data.form} />
+	<TaskForm data={data.form} />
+</div>

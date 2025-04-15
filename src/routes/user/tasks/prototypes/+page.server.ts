@@ -124,7 +124,7 @@ export const actions: Actions = {
 			},
 			data: {
 				name: data.name,
-				description: data.description,
+				description: data.description ?? '',
 				weekDays: data.weekDays
 			}
 		});
