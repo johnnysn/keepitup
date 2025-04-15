@@ -58,7 +58,8 @@ export const actions: Actions = {
 		}
 
 		// console.log(form.data.weekDays);
-		if (form.data.weekDays === '0000000') error(400, 'You should select at least one week day');
+		if (form.data.weekDays === '0000000')
+			error(400, 'You should select at least one day of the week');
 
 		const order = await prototypeService.getNextOrder(session.user.email);
 
@@ -117,6 +118,8 @@ export const actions: Actions = {
 
 		if (!prototype || prototype.userEmail !== session.user.email)
 			error(403, 'User does not have access to the prototype');
+
+		if (data.weekDays === '0000000') error(400, 'You should select at least one day of the week');
 
 		await prisma.taskPrototype.update({
 			where: {

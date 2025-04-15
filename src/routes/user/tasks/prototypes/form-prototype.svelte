@@ -8,6 +8,7 @@
 	import { zodClient } from 'sveltekit-superforms/adapters';
 	import { Label } from '$lib/components/ui/label';
 	import { formatWeekDay } from '$lib/utils';
+	import Button from '$lib/components/ui/button/button.svelte';
 
 	type Props = {
 		data: SuperValidated<Infer<PrototypeFormSchema>>;
@@ -34,10 +35,35 @@
 	function checkedChanged(pos: number, value: boolean): void {
 		formData.update((current) => {
 			let wd = formatWeekDay(current.weekDays, pos, value);
-			console.log(wd);
+			// console.log(wd);
 
 			return { ...current, weekDays: wd };
 		});
+	}
+
+	function setWeekdays() {
+		formData.update((current) => {
+			return {
+				...current,
+				weekDays: current.weekDays.charAt(0) + '11111' + current.weekDays.charAt(6)
+			};
+		});
+		checks = [checks[0], true, true, true, true, true, checks[6]];
+	}
+
+	function setWeekends() {
+		formData.update((current) => {
+			return { ...current, weekDays: '1' + current.weekDays.slice(1, 6) + '1' };
+		});
+		checks[0] = true;
+		checks[6] = true;
+	}
+
+	function setEveryday() {
+		formData.update((current) => {
+			return { ...current, weekDays: '1111111' };
+		});
+		checks = [true, true, true, true, true, true, true];
 	}
 </script>
 
@@ -71,6 +97,12 @@
 			<Input {...attrs} type="hidden" bind:value={$formData.weekDays} />
 		</Form.Control>
 	</Form.Field>
+
+	<div class="mb-4 flex items-center gap-4">
+		<Button variant="secondary" size="sm" onclick={() => setWeekdays()}>Weekdays</Button>
+		<Button variant="secondary" size="sm" onclick={() => setWeekends()}>Weekends</Button>
+		<Button variant="secondary" size="sm" onclick={() => setEveryday()}>Everyday</Button>
+	</div>
 
 	<div class="mb-4 flex flex-wrap space-x-6">
 		<div class="mb-2 flex items-center gap-2 space-y-0">
