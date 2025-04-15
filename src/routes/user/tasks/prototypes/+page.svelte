@@ -4,6 +4,9 @@
 	import PrototypeList from './prototype-list.svelte';
 	import { applyAction, deserialize } from '$app/forms';
 	import { invalidateAll } from '$app/navigation';
+	import Button from '$lib/components/ui/button/button.svelte';
+	import * as Collapsible from '$lib/components/ui/collapsible/index.js';
+	import { ChevronsUpDown } from 'lucide-svelte';
 
 	let { data } = $props();
 	let ids = $state('');
@@ -37,7 +40,17 @@
 </script>
 
 <div class="flex flex-col items-center gap-4">
-	<FormPrototype data={data.form} />
+	<Collapsible.Root class="flex w-full max-w-screen-sm flex-col items-center">
+		<Collapsible.Trigger asChild let:builder>
+			<Button builders={[builder]} variant="ghost" size="sm" class="flex w-full items-center gap-4">
+				<span>Add new recurrent task</span>
+				<ChevronsUpDown class="h-4 w-4" />
+			</Button>
+		</Collapsible.Trigger>
+		<Collapsible.Content class="flex w-full flex-col items-center">
+			<FormPrototype data={data.form} />
+		</Collapsible.Content>
+	</Collapsible.Root>
 
 	<PrototypeList items={data.protos} onUpdatedOrder={updatedOrder} />
 
