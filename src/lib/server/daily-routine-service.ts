@@ -33,7 +33,8 @@ export const dailyRoutineService = {
 
 		// Prototypes for this day
 		const reliableDate = dateFromDateStr(dateStr);
-		const day = reliableDate.getDay();
+
+		const day = reliableDate.getUTCDay();
 		let weekDayStr = '.......';
 		weekDayStr = weekDayStr.slice(0, day) + '1' + weekDayStr.slice(day + 1);
 		const regexPattern = '^' + weekDayStr + '$';
