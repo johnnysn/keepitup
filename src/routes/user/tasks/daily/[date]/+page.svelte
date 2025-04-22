@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { applyAction, deserialize } from '$app/forms';
+	import { applyAction, deserialize, enhance } from '$app/forms';
 	import SimpleTaskForm from './simple-task-form.svelte';
 	import TaskList from './task-list.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import { page } from '$app/state';
-	import { ChevronLeft, ChevronRight } from 'lucide-svelte';
+	import { ChevronLeft, ChevronRight, CircleDashed } from 'lucide-svelte';
 	import { dateFromDateStr, dateStrFromDate, formatDate } from '$lib/utils';
 	import type { ActionResult } from '@sveltejs/kit';
 	import { invalidateAll, goto } from '$app/navigation';
@@ -12,6 +12,7 @@
 	let { data } = $props();
 	let ids = $state('');
 	let formElem: HTMLFormElement;
+	let isLoading = $state(false);
 
 	function updatedOrder(items: string[]): void {
 		ids = items.join(',');
@@ -68,4 +69,29 @@
 	<TaskList items={data.tasks} onUpdatedOrder={updatedOrder} />
 
 	<form action="?/updateOrder" method="POST" bind:this={formElem} onsubmit={handleSubmit}></form>
+
+	{#if data.allowLoadingDailyTasks}
+		<form
+			class="mt-2 flex w-full max-w-screen-sm justify-end"
+			method="POST"
+			action="?/reloadRecurrent"
+			use:enhance={() => {
+				isLoading = true;
+				return async ({ result, update }) => {
+					update({ reset: false });
+					isLoading = false;
+				};
+			}}
+		>
+			<Button
+				variant="outline"
+				class="flex items-center gap-1.5"
+				disabled={isLoading}
+				type="submit"
+			>
+				<CircleDashed class="size-4" />
+				<span>Load recurrent tasks</span>
+			</Button>
+		</form>
+	{/if}
 </div>

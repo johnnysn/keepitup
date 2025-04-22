@@ -25,6 +25,9 @@
 		onUpdated({ form }) {
 			if (form.valid) {
 				toast.success('Prototype successfully created!');
+			} else {
+				toast.error('Sei lá');
+				console.log(form.errors);
 			}
 			checks = [false, false, false, false, false, false, false];
 		}
@@ -43,9 +46,12 @@
 
 	function setWeekdays() {
 		formData.update((current) => {
+			let wd = '0000000';
+			if (current.weekDays && current.weekDays.length === 7) wd = current.weekDays;
+
 			return {
 				...current,
-				weekDays: current.weekDays.charAt(0) + '11111' + current.weekDays.charAt(6)
+				weekDays: wd.charAt(0) + '11111' + wd.charAt(6)
 			};
 		});
 		checks = [checks[0], true, true, true, true, true, checks[6]];
@@ -53,7 +59,10 @@
 
 	function setWeekends() {
 		formData.update((current) => {
-			return { ...current, weekDays: '1' + current.weekDays.slice(1, 6) + '1' };
+			let wd = '0000000';
+			if (current.weekDays && current.weekDays.length === 7) wd = current.weekDays;
+
+			return { ...current, weekDays: '1' + wd.slice(1, 6) + '1' };
 		});
 		checks[0] = true;
 		checks[6] = true;
@@ -99,9 +108,15 @@
 	</Form.Field>
 
 	<div class="mb-4 flex items-center gap-4">
-		<Button variant="secondary" size="sm" onclick={() => setWeekdays()}>Weekdays</Button>
-		<Button variant="secondary" size="sm" onclick={() => setWeekends()}>Weekends</Button>
-		<Button variant="secondary" size="sm" onclick={() => setEveryday()}>Everyday</Button>
+		<Button variant="secondary" size="sm" type="button" onclick={() => setWeekdays()}>
+			Weekdays
+		</Button>
+		<Button variant="secondary" size="sm" type="button" onclick={() => setWeekends()}>
+			Weekends
+		</Button>
+		<Button variant="secondary" size="sm" type="button" onclick={() => setEveryday()}>
+			Everyday
+		</Button>
 	</div>
 
 	<div class="mb-4 flex flex-wrap space-x-6">

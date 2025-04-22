@@ -19,9 +19,13 @@ export const load = async ({ params, locals }) => {
 	if (!session || !session.user || !session.user.email) error(401, 'User is not authorized.');
 	const userEmail = session.user.email;
 
-	if (params.date === dateStrFromDate(new Date())) {
+	let allowLoadingDailyTasks = false;
+	const today = new Date();
+	if (params.date === dateStrFromDate(today)) {
 		// console.log('Generating recurrent tasks');
-		await dailyRoutineService.generateForDate(userEmail, new Date());
+		await dailyRoutineService.executeLoadingRoutine(userEmail, today);
+	} else if (dateFromDateStr(params.date).getTime() > today.getTime()) {
+		allowLoadingDailyTasks = true;
 	}
 
 	return {
@@ -39,7 +43,8 @@ export const load = async ({ params, locals }) => {
 				}
 			]
 		}),
-		form: await superValidate(zod(simpleTaskSchema))
+		form: await superValidate(zod(simpleTaskSchema)),
+		allowLoadingDailyTasks
 	};
 };
 
@@ -146,6 +151,16 @@ export const actions: Actions = {
 		} catch (err) {
 			error(400, 'There has been a problem when updating the order of tasks');
 		}
+
+		return {
+			success: true
+		};
+	},
+	reloadRecurrent: async ({ request, locals, params }) => {
+		const session = await locals.auth();
+		if (!session || !session.user || !session.user.email) error(401, 'User is not authorized');
+
+		await dailyRoutineService.generateForDate(session.user.email, params.date!);
 
 		return {
 			success: true

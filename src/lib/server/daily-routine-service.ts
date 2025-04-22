@@ -3,7 +3,7 @@ import { Prisma, type DailyRoutine, type TaskPrototype } from '@prisma/client';
 import prisma from './prisma';
 
 export const dailyRoutineService = {
-	async generateForDate(userEmail: string, date: Date) {
+	async executeLoadingRoutine(userEmail: string, date: Date) {
 		const dateStr = dateStrFromDate(date);
 
 		const existingRoutine = await prisma.dailyRoutine.findUnique({
@@ -31,8 +31,25 @@ export const dailyRoutineService = {
 
 		if (routine.executed) return;
 
-		// Prototypes for this day
+		await this.generateForDate(userEmail, dateStr);
+
+		// Mark the routine as executed
+		await prisma.dailyRoutine.update({
+			where: {
+				prismaislame: {
+					userEmail,
+					dateStr
+				}
+			},
+			data: {
+				executed: true
+			}
+		});
+	},
+
+	async generateForDate(userEmail: string, dateStr: string) {
 		const reliableDate = dateFromDateStr(dateStr);
+		// console.log(reliableDate);
 
 		const day = reliableDate.getUTCDay();
 		let weekDayStr = '.......';
@@ -84,18 +101,5 @@ export const dailyRoutineService = {
 				}
 			});
 		}
-
-		// Mark the routine as executed
-		await prisma.dailyRoutine.update({
-			where: {
-				prismaislame: {
-					userEmail,
-					dateStr
-				}
-			},
-			data: {
-				executed: true
-			}
-		});
 	}
 };
