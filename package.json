@@ -54,6 +54,7 @@
 		"@auth/prisma-adapter": "^2.8.0",
 		"@auth/sveltekit": "^1.8.0",
 		"@prisma/client": "6.5.0",
+		"dotenv": "^16.5.0",
 		"zod-form-data": "^2.0.7"
 	}
 }
