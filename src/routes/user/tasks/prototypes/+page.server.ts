@@ -10,8 +10,9 @@ import {
 } from '$lib/schemas/prototype-schema';
 import { prototypeService } from '$lib/server/prototype-service.js';
 
-export const load = async ({ locals }) => {
+export const load = async ({ locals, url }) => {
 	const session = await locals.auth();
+	const name = url.searchParams.get('name');
 
 	if (!session || !session.user || !session.user.email) error(401, 'User is not authorized.');
 
@@ -26,9 +27,17 @@ export const load = async ({ locals }) => {
 		]
 	});
 
+	let prefilledValues = undefined;
+
+	if (name) {
+		prefilledValues = {
+			name
+		};
+	}
+
 	return {
 		protos,
-		form: await superValidate(zod(prototypeFormSchema))
+		form: await superValidate(prefilledValues, zod(prototypeFormSchema))
 	};
 };
 

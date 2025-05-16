@@ -26,7 +26,7 @@
 			if (form.valid) {
 				toast.success('Prototype successfully created!');
 			} else {
-				toast.error('Sei lá');
+				toast.error('There has been an error when creating a new prototype');
 				console.log(form.errors);
 			}
 			checks = [false, false, false, false, false, false, false];

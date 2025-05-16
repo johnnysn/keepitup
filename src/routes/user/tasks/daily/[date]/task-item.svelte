@@ -4,7 +4,7 @@
 	import { cn } from '$lib/utils';
 	import type { Task } from '@prisma/client';
 	import { Button, buttonVariants } from '../../../../../lib/components/ui/button';
-	import { Trash2, ChevronsDown, ChevronsUp, Edit } from 'lucide-svelte';
+	import { Trash2, ChevronsDown, ChevronsUp, Edit, Repeat } from 'lucide-svelte';
 	import { enhance } from '$app/forms';
 	import { onDestroy } from 'svelte';
 
@@ -112,6 +112,16 @@
 				>
 					<Edit class="size-4" />
 					<span>Edit task</span>
+				</a>
+				<a
+					class={cn(
+						'flex items-center gap-1.5',
+						buttonVariants({ variant: 'outline', size: 'sm' })
+					)}
+					href={`/user/tasks/prototypes?name=${task.name}`}
+				>
+					<Repeat class="size-4" />
+					<span>Make recurrent</span>
 				</a>
 				<Button
 					variant="outline"
