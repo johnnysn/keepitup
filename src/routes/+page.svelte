@@ -4,7 +4,16 @@
 <div class="mt-2 flex w-full flex-col items-center px-2 md:gap-8">
 	<section class="mb-2 md:mb-6">
 		<h1>
-			<img src="/hero.png" alt="Face your daily tasks like a true knight!" class="md:w-[600px]" />
+			<picture>
+				<!-- Imagem para telas maiores que 1200px -->
+				<source srcset="/hero-big.png" media="(min-width: 1200px)" />
+
+				<!-- Imagem para telas entre 800px e 1199px -->
+				<source srcset="/hero.png" media="(min-width: 800px)" />
+
+				<!-- Imagem padrão para telas menores -->
+				<img src="/hero-small.png" alt="Face your daily tasks like a true knight!" />
+			</picture>
 		</h1>
 	</section>
 
