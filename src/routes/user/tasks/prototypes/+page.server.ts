@@ -1,5 +1,5 @@
 import prisma from '$lib/server/prisma.js';
-import { error, type Actions } from '@sveltejs/kit';
+import { error, redirect, type Actions } from '@sveltejs/kit';
 import { superValidate, fail } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import {
@@ -82,9 +82,10 @@ export const actions: Actions = {
 			}
 		});
 
-		return {
-			form
-		};
+		throw redirect(303, event.url.pathname);
+		// return {
+		// 	form
+		// };
 	},
 	delete: async ({ request, locals }) => {
 		const session = await locals.auth();
