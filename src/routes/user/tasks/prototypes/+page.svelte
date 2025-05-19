@@ -7,10 +7,19 @@
 	import Button from '$lib/components/ui/button/button.svelte';
 	import * as Collapsible from '$lib/components/ui/collapsible/index.js';
 	import { ChevronsUpDown } from 'lucide-svelte';
+	import { page } from '$app/state';
 
 	let { data } = $props();
 	let ids = $state('');
 	let formElem: HTMLFormElement;
+	let addFormOpen = $state(false);
+
+	$effect(() => {
+		const name = page.url.searchParams.get('name');
+		if (name) {
+			addFormOpen = true;
+		}
+	});
 
 	function updatedOrder(items: string[]): void {
 		ids = items.join(',');
@@ -40,7 +49,10 @@
 </script>
 
 <div class="flex flex-col items-center gap-4">
-	<Collapsible.Root class="flex w-full max-w-screen-sm flex-col items-center">
+	<Collapsible.Root
+		class="flex w-full max-w-screen-sm flex-col items-center"
+		bind:open={addFormOpen}
+	>
 		<Collapsible.Trigger asChild let:builder>
 			<Button builders={[builder]} variant="ghost" size="sm" class="flex w-full items-center gap-4">
 				<span>Add new recurrent task</span>
