@@ -7,9 +7,10 @@
 	import { Trash2, ChevronsDown, ChevronsUp, Edit, Repeat } from 'lucide-svelte';
 	import { enhance } from '$app/forms';
 	import { onDestroy } from 'svelte';
+	import type { AugmentedTask } from '$lib/types/augmented-task';
 
 	type Props = {
-		task: Task;
+		task: AugmentedTask;
 	};
 
 	const { task }: Props = $props();
@@ -103,6 +104,12 @@
 		{/if}
 		{#if editMode}
 			<div class="flex justify-end gap-1.5">
+				{#if task.recurrent}
+					<div class="flex items-center gap-1.5 text-sm text-muted-foreground">
+						<Repeat class="size-4" />
+						<span>recurrent</span>
+					</div>
+				{/if}
 				<a
 					class={cn(
 						'flex items-center gap-1.5',
@@ -113,16 +120,18 @@
 					<Edit class="size-4" />
 					<span>Edit task</span>
 				</a>
-				<a
-					class={cn(
-						'flex items-center gap-1.5',
-						buttonVariants({ variant: 'outline', size: 'sm' })
-					)}
-					href={`/user/tasks/prototypes?name=${task.name}`}
-				>
-					<Repeat class="size-4" />
-					<span>Make recurrent</span>
-				</a>
+				{#if !task.recurrent}
+					<a
+						class={cn(
+							'flex items-center gap-1.5',
+							buttonVariants({ variant: 'outline', size: 'sm' })
+						)}
+						href={`/user/tasks/prototypes?name=${task.name}`}
+					>
+						<Repeat class="size-4" />
+						<span>Make recurrent</span>
+					</a>
+				{/if}
 				<Button
 					variant="outline"
 					size="sm"

@@ -28,21 +28,32 @@ export const load = async ({ params, locals }) => {
 		allowLoadingDailyTasks = true;
 	}
 
-	return {
-		tasks: await prisma.task.findMany({
-			where: {
-				date,
-				userEmail
-			},
-			orderBy: [
-				{
-					date: 'asc'
-				},
-				{
-					order: 'asc'
-				}
-			]
+	const [tasks, prototypes] = await Promise.all([
+		prisma.task.findMany({
+		  where: {
+			userEmail,
+			date,
+		  },
 		}),
+		prisma.taskPrototype.findMany({
+		  where: {
+			userEmail,
+		  },
+		  select: {
+			name: true,
+		  },
+		}),
+	  ])
+
+	const prototypeNames = new Set(prototypes.map(p => p.name));
+
+	const tasksWithPrototypeFlag = tasks.map(task => ({
+		...task,
+		recurrent: prototypeNames.has(task.name),
+	  }));
+
+	return {
+		tasks: tasksWithPrototypeFlag,
 		form: await superValidate(zod(simpleTaskSchema)),
 		allowLoadingDailyTasks
 	};

@@ -4,19 +4,20 @@
 	import type { Task } from '@prisma/client';
 	import TaskItem from './task-item.svelte';
 	import { GripVertical } from 'lucide-svelte';
+	import type { AugmentedTask } from '$lib/types/augmented-task';
 
 	type Props = {
-		items: Task[];
+		items: (Task & { recurrent: boolean })[];
 		onUpdatedOrder: (items: string[]) => void;
 	};
 
 	let { items, onUpdatedOrder }: Props = $props();
 
 	const flipDurationMs = 300;
-	function handleDndConsider(e: CustomEvent<DndEvent<Task>>) {
+	function handleDndConsider(e: CustomEvent<DndEvent<AugmentedTask>>) {
 		items = e.detail.items;
 	}
-	function handleDndFinalize(e: CustomEvent<DndEvent<Task>>) {
+	function handleDndFinalize(e: CustomEvent<DndEvent<AugmentedTask>>) {
 		items = e.detail.items;
 		onUpdatedOrder(items.map((i) => i.id));
 	}
