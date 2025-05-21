@@ -1,8 +1,8 @@
 <script lang="ts">
 </script>
 
-<div class="mt-2 flex w-full flex-col items-center px-2 md:gap-8">
-	<section class="mb-2 md:mb-6">
+<div class="mt-2 flex w-full flex-col items-center gap-2 px-2 md:gap-4">
+	<section class="order-1 mb-2 md:mb-4">
 		<h1>
 			<picture>
 				<!-- Imagem para telas maiores que 1200px -->
@@ -12,16 +12,20 @@
 				<source srcset="/hero.png" media="(min-width: 800px)" />
 
 				<!-- Imagem padrão para telas menores -->
-				<img src="/hero-small.png" alt="Face your daily tasks like a true knight!" />
+				<img
+					src="/hero-small.png"
+					alt="Face your daily tasks like a true knight!"
+					class="lg:w-[840px]"
+				/>
 			</picture>
 		</h1>
 	</section>
 
-	<section class="mb-4 flex w-full flex-col items-center">
+	<section class="order-3 mb-2 flex w-full flex-col items-center md:order-2">
 		<h2 class="mb-4 text-center text-lg font-bold md:text-xl">
-			Here is what <span class="text-prim">Keep It Up</span> can do for you
+			Here is what <span class="text-prim">Keep It Up</span> can help you with
 		</h2>
-		<div class="mb-4 flex w-full flex-wrap justify-center gap-4 text-sm md:text-base">
+		<div class="mb-4 flex w-full flex-wrap justify-center gap-3 text-sm md:text-base">
 			<div class="flex max-w-[270px] flex-col items-center">
 				<h2 class="mb-2 font-semibold">🗓️ Effortless Daily Planning</h2>
 
@@ -52,7 +56,7 @@
 	</section>
 	<button
 		type="button"
-		class="rounded border border-prim bg-transparent px-6 py-4 text-xl font-semibold text-prim transition delay-100 duration-300 hover:border-background hover:bg-foreground hover:text-background"
+		class="order-2 rounded border border-foreground bg-transparent px-6 py-4 text-xl font-semibold text-foreground transition delay-100 duration-300 hover:border-background hover:bg-foreground hover:text-background md:order-3"
 	>
 		Start tackling tasks now!
 	</button>
