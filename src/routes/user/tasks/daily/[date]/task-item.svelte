@@ -105,10 +105,13 @@
 		{#if editMode}
 			<div class="flex justify-end gap-1.5">
 				{#if task.recurrent}
-					<div class="flex items-center gap-1.5 text-sm text-muted-foreground">
+					<a
+						class="mr-2 flex cursor-pointer items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
+						href="/user/tasks/prototypes"
+					>
 						<Repeat class="size-4" />
 						<span>recurrent</span>
-					</div>
+					</a>
 				{/if}
 				<a
 					class={cn(
@@ -118,7 +121,7 @@
 					href={`/user/tasks/${task.id}`}
 				>
 					<Edit class="size-4" />
-					<span>Edit task</span>
+					<span>Edit</span>
 				</a>
 				{#if !task.recurrent}
 					<a
@@ -141,7 +144,7 @@
 					class="flex items-center gap-1.5"
 				>
 					<Trash2 class="size-4" />
-					<span>Delete task</span>
+					<span>Delete</span>
 				</Button>
 			</div>
 		{/if}

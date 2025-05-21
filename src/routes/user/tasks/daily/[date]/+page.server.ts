@@ -30,27 +30,30 @@ export const load = async ({ params, locals }) => {
 
 	const [tasks, prototypes] = await Promise.all([
 		prisma.task.findMany({
-		  where: {
-			userEmail,
-			date,
-		  },
+			where: {
+				userEmail,
+				date
+			},
+			orderBy: {
+				order: 'asc'
+			}
 		}),
 		prisma.taskPrototype.findMany({
-		  where: {
-			userEmail,
-		  },
-		  select: {
-			name: true,
-		  },
-		}),
-	  ])
+			where: {
+				userEmail
+			},
+			select: {
+				name: true
+			}
+		})
+	]);
 
-	const prototypeNames = new Set(prototypes.map(p => p.name));
+	const prototypeNames = new Set(prototypes.map((p) => p.name));
 
-	const tasksWithPrototypeFlag = tasks.map(task => ({
+	const tasksWithPrototypeFlag = tasks.map((task) => ({
 		...task,
-		recurrent: prototypeNames.has(task.name),
-	  }));
+		recurrent: prototypeNames.has(task.name)
+	}));
 
 	return {
 		tasks: tasksWithPrototypeFlag,
