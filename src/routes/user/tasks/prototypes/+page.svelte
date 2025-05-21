@@ -13,11 +13,20 @@
 	let ids = $state('');
 	let formElem: HTMLFormElement;
 	let addFormOpen = $state(false);
+	let targetId = $state<string | undefined>(undefined);
 
 	$effect(() => {
-		const name = page.url.searchParams.get('name');
+		let name = page.url.searchParams.get('name');
 		if (name) {
-			addFormOpen = true;
+			name = name.trim();
+			const proto = data.protos.find((p) => p.name === name);
+			if (proto) {
+				targetId = proto.id;
+				addFormOpen = false;
+			} else {
+				targetId = undefined;
+				addFormOpen = true;
+			}
 		}
 	});
 
@@ -64,7 +73,7 @@
 		</Collapsible.Content>
 	</Collapsible.Root>
 
-	<PrototypeList items={data.protos} onUpdatedOrder={updatedOrder} />
+	<PrototypeList items={data.protos} onUpdatedOrder={updatedOrder} {targetId} />
 
 	<form action="?/updateOrder" method="POST" bind:this={formElem} onsubmit={handleSubmit}></form>
 </div>

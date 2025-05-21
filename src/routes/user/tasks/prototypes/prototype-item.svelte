@@ -10,12 +10,12 @@
 
 	type Props = {
 		prototype: TaskPrototype;
+		open: boolean;
 	};
 
-	let { prototype }: Props = $props();
+	let { prototype, open }: Props = $props();
 
 	let isPosting = $state(false);
-	let editMode = $state(false);
 	let form: HTMLFormElement;
 
 	let weekDays = $state(prototype.weekDays);
@@ -73,10 +73,10 @@
 				variant="outline"
 				size="icon"
 				on:click={() => {
-					editMode = !editMode;
+					open = !open;
 				}}
 			>
-				{#if editMode}
+				{#if open}
 					<ChevronsUp class="size-4" />
 				{:else}
 					<ChevronsDown class="size-4" />
@@ -87,7 +87,7 @@
 	</div>
 
 	<div class="mt-0.5 flex flex-col gap-1.5 pl-3">
-		{#if editMode || (prototype.description && prototype.description.length > 0)}
+		{#if open || (prototype.description && prototype.description.length > 0)}
 			<input
 				type="text"
 				name="description"
@@ -97,20 +97,10 @@
 				onblur={() => form.requestSubmit()}
 			/>
 		{/if}
-		{#if editMode}
+		{#if open}
 			<div class="flex flex-col">
 				<WeekdaysMarker weekDays={prototype.weekDays} onCheckChanged={checkChangedHandler} />
 				<div class="flex justify-end gap-1.5">
-					<a
-						class={cn(
-							'flex items-center gap-1.5',
-							buttonVariants({ variant: 'outline', size: 'sm' })
-						)}
-						href={`/user/tasks/${prototype.id}`}
-					>
-						<Edit class="size-4" />
-						<span>Advanced edit</span>
-					</a>
 					<Button
 						variant="outline"
 						size="sm"

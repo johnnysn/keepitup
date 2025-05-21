@@ -8,9 +8,10 @@
 	type Props = {
 		items: TaskPrototype[];
 		onUpdatedOrder: (items: string[]) => void;
+		targetId: string | null | undefined;
 	};
 
-	let { items, onUpdatedOrder }: Props = $props();
+	let { items, onUpdatedOrder, targetId }: Props = $props();
 
 	const flipDurationMs = 300;
 	function handleDndConsider(e: CustomEvent<DndEvent<TaskPrototype>>) {
@@ -36,7 +37,7 @@
 			<div use:dragHandle class="mx-1 text-foreground/50 hover:text-foreground">
 				<GripVertical class="size-6" />
 			</div>
-			<PrototypeItem prototype={item} />
+			<PrototypeItem prototype={item} open={targetId === item.id} />
 		</li>
 	{/each}
 </ul>
