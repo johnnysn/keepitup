@@ -1,6 +1,8 @@
 import { z } from 'zod';
 import { zfd } from 'zod-form-data';
 
+const typeEnum = z.enum(['DAILY', 'FLOATING']);
+
 const nameSchema = z
 	.string()
 	.min(2, { message: 'Minimum 2 characters' })
@@ -10,7 +12,8 @@ const descriptionSchema = z.optional(z.string().max(100, { message: 'Maximum 100
 
 export const simpleTaskSchema = z.object({
 	name: nameSchema,
-	date: z.optional(z.coerce.date())
+	date: z.optional(z.coerce.date()),
+	type: typeEnum.default('DAILY')
 });
 
 export type SimpleTaskSchema = typeof simpleTaskSchema;
@@ -39,5 +42,6 @@ const commaSeparatedIdsSchema = z.string().transform((input) => {
 });
 
 export const taskOrderUpdateSchema = zfd.formData({
-	ids: zfd.text(commaSeparatedIdsSchema)
+	ids: zfd.text(commaSeparatedIdsSchema),
+	type: zfd.text(typeEnum)
 });

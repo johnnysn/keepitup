@@ -77,7 +77,8 @@ export const dailyRoutineService = {
 			const tasks = await prisma.task.findMany({
 				where: {
 					date: reliableDate,
-					userEmail
+					userEmail,
+					type: 'DAILY'
 				}
 			});
 
@@ -94,7 +95,8 @@ export const dailyRoutineService = {
 							name: p.name,
 							description: p.description,
 							date: reliableDate,
-							userEmail
+							userEmail,
+							type: 'DAILY'
 						}
 					});
 					order++;

@@ -103,25 +103,27 @@
 		{/if}
 		{#if editMode}
 			<div class="flex justify-end gap-1.5">
-				{#if task.recurrent}
-					<a
-						class="mr-2 flex cursor-pointer items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
-						href={`/user/tasks/prototypes?name=${task.name.trim()}`}
-					>
-						<Repeat class="size-4" />
-						<span>recurrent</span>
-					</a>
-				{:else}
-					<a
-						class={cn(
-							'flex items-center gap-1.5',
-							buttonVariants({ variant: 'outline', size: 'sm' })
-						)}
-						href={`/user/tasks/prototypes?name=${task.name}`}
-					>
-						<Repeat class="size-4" />
-						<span>Recurrency</span>
-					</a>
+				{#if task.type === 'DAILY'}
+					{#if task.recurrent}
+						<a
+							class="mr-2 flex cursor-pointer items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
+							href={`/user/tasks/prototypes?name=${task.name.trim()}`}
+						>
+							<Repeat class="size-4" />
+							<span>recurrent</span>
+						</a>
+					{:else}
+						<a
+							class={cn(
+								'flex items-center gap-1.5',
+								buttonVariants({ variant: 'outline', size: 'sm' })
+							)}
+							href={`/user/tasks/prototypes?name=${task.name}`}
+						>
+							<Repeat class="size-4" />
+							<span>Recurrency</span>
+						</a>
+					{/if}
 				{/if}
 				<a
 					class={cn(

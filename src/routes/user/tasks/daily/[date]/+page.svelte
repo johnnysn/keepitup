@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { applyAction, deserialize, enhance } from '$app/forms';
 	import SimpleTaskForm from '$lib/components/simple-task-form.svelte';
-	import TaskList from './task-list.svelte';
+	import TaskList from '$lib/components/task-list.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import { page } from '$app/state';
 	import { ChevronLeft, ChevronRight, CircleDashed } from 'lucide-svelte';
@@ -26,6 +26,7 @@
 		event.preventDefault();
 		const formData = new FormData();
 		formData.append('ids', ids);
+		formData.append('type', 'DAILY');
 
 		const response = await fetch(event.currentTarget.action, {
 			method: 'POST',
@@ -64,7 +65,7 @@
 		<Button variant={'outline'} size={'icon'} onclick={() => forward()}><ChevronRight /></Button>
 	</div>
 
-	<SimpleTaskForm data={data.form} />
+	<SimpleTaskForm data={data.form} floating={false} />
 
 	<TaskList items={data.tasks} onUpdatedOrder={updatedOrder} />
 

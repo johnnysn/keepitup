@@ -8,12 +8,16 @@
 
 	type Props = {
 		data: SuperValidated<Infer<SimpleTaskSchema>>;
+		floating: boolean;
 	};
 
-	let { data }: Props = $props();
+	let { data, floating = false }: Props = $props();
 
 	const form = superForm(data, {
 		validators: zodClient(simpleTaskSchema),
+		onSubmit({ formData }) {
+			formData.set('type', floating ? 'FLOATING' : 'DAILY');
+		},
 		onError({ result }) {
 			toast.error(result.error.message);
 		},
@@ -38,6 +42,11 @@
 			<span></span>
 			<Form.FieldErrors />
 		</div>
+	</Form.Field>
+	<Form.Field {form} name="type">
+		<Form.Control let:attrs>
+			<Input {...attrs} bind:value={$formData.type} type="hidden" />
+		</Form.Control>
 	</Form.Field>
 	<Form.Button class="w-full">Create new task</Form.Button>
 </form>

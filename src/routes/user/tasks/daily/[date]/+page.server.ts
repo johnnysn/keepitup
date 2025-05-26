@@ -1,4 +1,4 @@
-import { simpleTaskSchema } from '$lib/schemas/task-schema';
+import { simpleTaskSchema, type SimpleTaskSchema } from '$lib/schemas/task-schema';
 import { dailyRoutineService } from '$lib/server/daily-routine-service.js';
 import prisma from '$lib/server/prisma';
 import { taskActions } from '$lib/server/task-actions.js';
@@ -27,7 +27,8 @@ export const load = async ({ params, locals }) => {
 		prisma.task.findMany({
 			where: {
 				userEmail,
-				date
+				date,
+				type: 'DAILY'
 			},
 			orderBy: {
 				order: 'asc'

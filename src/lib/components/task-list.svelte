@@ -42,6 +42,6 @@
 			</li>
 		{/each}
 	{:else}
-		No tasks for today 😀
+		No tasks for now 😀
 	{/if}
 </ul>

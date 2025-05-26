@@ -24,14 +24,14 @@ export const taskActions: Actions = {
 		const session = await event.locals.auth();
 		if (!session || !session.user || !session.user.email) error(401, 'User is not authorized.');
 
-		const date = form.data.date
-			? atStartOfDay(form.data.date)
-			: dateFromDateStr(event.params.date!);
-		const order = await taskService.getNextOrder(session.user.email, date);
+		const paramDate = event.params.date ? event.params.date : dateStrFromDate(new Date());
+		const date = form.data.date ? atStartOfDay(form.data.date) : dateFromDateStr(paramDate);
+		const order = await taskService.getNextOrder(session.user.email, date, form.data.type);
 
 		await prisma.task.create({
 			data: {
 				name: form.data.name,
+				type: form.data.type,
 				date,
 				userEmail: session.user.email,
 				order
@@ -109,10 +109,12 @@ export const taskActions: Actions = {
 		try {
 			await taskService.updateTasksOrder(
 				session.user.email,
-				dateFromDateStr(params.date!),
-				data.ids
+				params.date ? dateFromDateStr(params.date) : new Date(),
+				data.ids,
+				data.type
 			);
 		} catch (err) {
+			// console.error(err);
 			error(400, 'There has been a problem when updating the order of tasks');
 		}
 

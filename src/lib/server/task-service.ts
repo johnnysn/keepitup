@@ -1,8 +1,8 @@
-import type { Task } from '@prisma/client';
+import type { Task, TaskType } from '@prisma/client';
 import prisma from './prisma';
 
 const taskService = {
-	async getNextOrder(userEmail: string, date: Date) {
+	async getNextOrder(userEmail: string, date: Date, type: TaskType) {
 		const maxOrder =
 			(
 				await prisma.task.aggregate({
@@ -11,7 +11,8 @@ const taskService = {
 					},
 					where: {
 						date,
-						userEmail
+						userEmail,
+						type
 					}
 				})
 			)._max.order ?? 0;
@@ -19,18 +20,20 @@ const taskService = {
 		const numberOfTasks = await prisma.task.count({
 			where: {
 				date: date,
-				userEmail
+				userEmail,
+				type
 			}
 		});
 
 		return Math.max(maxOrder + 1, numberOfTasks + 1);
 	},
 
-	async updateTasksOrder(userEmail: string, date: Date, ids: string[]) {
+	async updateTasksOrder(userEmail: string, date: Date, ids: string[], type: TaskType) {
 		const savedTasks = await prisma.task.findMany({
 			where: {
 				userEmail,
-				date
+				type,
+				...(type === 'DAILY' && { date })
 			}
 		});
 
