@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { applyAction, deserialize, enhance } from '$app/forms';
-	import SimpleTaskForm from './simple-task-form.svelte';
+	import SimpleTaskForm from '$lib/components/simple-task-form.svelte';
 	import TaskList from './task-list.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import { page } from '$app/state';

@@ -39,16 +39,5 @@
 			<Form.FieldErrors />
 		</div>
 	</Form.Field>
-	<!-- <Form.Field {form} name="date">
-		<Form.Control let:attrs>
-			<Form.Label>Task date</Form.Label>
-			<Input {...attrs} bind:value={$formData.date} defaultValue={page.params.date} type="date" />
-		</Form.Control>
-		<Form.Description>Input the date of the task</Form.Description>
-		<div class="flex min-h-4 flex-row">
-			<span></span>
-			<Form.FieldErrors />
-		</div>
-	</Form.Field> -->
 	<Form.Button class="w-full">Create new task</Form.Button>
 </form>

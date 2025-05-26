@@ -2,8 +2,7 @@
 	import { Checkbox } from '$lib/components/ui/checkbox';
 	import { Label } from '$lib/components/ui/label';
 	import { cn } from '$lib/utils';
-	import type { Task } from '@prisma/client';
-	import { Button, buttonVariants } from '../../../../../lib/components/ui/button';
+	import { Button, buttonVariants } from './ui/button';
 	import { Trash2, ChevronsDown, ChevronsUp, Edit, Repeat } from 'lucide-svelte';
 	import { enhance } from '$app/forms';
 	import { onDestroy } from 'svelte';
@@ -112,18 +111,7 @@
 						<Repeat class="size-4" />
 						<span>recurrent</span>
 					</a>
-				{/if}
-				<a
-					class={cn(
-						'flex items-center gap-1.5',
-						buttonVariants({ variant: 'outline', size: 'sm' })
-					)}
-					href={`/user/tasks/${task.id}`}
-				>
-					<Edit class="size-4" />
-					<span>Edit</span>
-				</a>
-				{#if !task.recurrent}
+				{:else}
 					<a
 						class={cn(
 							'flex items-center gap-1.5',
@@ -132,19 +120,29 @@
 						href={`/user/tasks/prototypes?name=${task.name}`}
 					>
 						<Repeat class="size-4" />
-						<span>Make recurrent</span>
+						<span>Recurrency</span>
 					</a>
 				{/if}
+				<a
+					class={cn(
+						'flex items-center gap-1.5',
+						buttonVariants({ variant: 'secondary', size: 'sm' })
+					)}
+					href={`/user/tasks/${task.id}`}
+				>
+					<Edit class="size-4" />
+					<span>Edit</span>
+				</a>
 				<Button
-					variant="outline"
+					variant="destructive"
 					size="sm"
 					type="submit"
 					formaction="?/delete"
 					disabled={isPosting}
-					class="flex items-center gap-1.5"
+					class="ml-1 flex items-center gap-1.5 md:ml-0"
 				>
 					<Trash2 class="size-4" />
-					<span>Delete</span>
+					<span class="hidden md:block">Delete</span>
 				</Button>
 			</div>
 		{/if}
