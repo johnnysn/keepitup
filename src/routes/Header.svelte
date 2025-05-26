@@ -29,6 +29,9 @@
 								<DropdownMenu.Item
 									><a href={'/user/tasks/prototypes'}>Recurrent tasks</a></DropdownMenu.Item
 								>
+								<DropdownMenu.Item
+									><a href={'/user/tasks/floating'}>Floating tasks</a></DropdownMenu.Item
+								>
 							</DropdownMenu.Group>
 						</DropdownMenu.Content>
 					</DropdownMenu.Root>

@@ -68,6 +68,11 @@ model VerificationToken {
   @@id([identifier, token])
 }
 
+enum TaskType {
+  DAILY
+  FLOATING
+}
+
 model Task {
   id          String   @id @default(cuid())
   name        String
@@ -77,6 +82,7 @@ model Task {
   order       Int      @default(1)
   userEmail   String
   user        User     @relation(fields: [userEmail], references: [email])
+  type        TaskType @default(FLOATING)
 
   @@index(fields: [userEmail, date, order])
 }
