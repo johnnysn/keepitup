@@ -8,11 +8,19 @@
 
 	const todayStr = dateStrFromDate(new Date());
 	const dailyLink = `/user/tasks/daily/${todayStr}`;
+
+	type Props = {
+		redirectToLanding: boolean;
+	};
+
+	let { redirectToLanding = true }: Props = $props();
+
+	let homeLink = $derived(redirectToLanding ? '/' : '/user');
 </script>
 
 <header>
 	<Wrapper class="my-2 flex items-center justify-between bg-background/60 md:px-2">
-		<a href="/" class="flex items-center">
+		<a href={homeLink} class="flex items-center">
 			<img src="/Logo-Light.png" class="dark:hidden" height="92px" alt="Keep It Up" />
 			<img src="/Logo-Dark.png" class="hidden dark:block" height="92px" alt="Keep It Up" />
 		</a>

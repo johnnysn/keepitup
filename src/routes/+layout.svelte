@@ -6,7 +6,7 @@
 	import Header from './Header.svelte';
 	import { Toaster } from '$lib/components/ui/sonner';
 
-	let { children } = $props();
+	let { children, data } = $props();
 </script>
 
 <svelte:head>
@@ -18,7 +18,7 @@
 <Toaster />
 
 <div class="bg-grid dark:bg-crow flex min-h-screen flex-col">
-	<Header />
+	<Header redirectToLanding={!data.session?.user} />
 
 	<main class={cn('flex-1')}>
 		<Wrapper class="px-2 py-2 md:px-6">
