@@ -1,6 +1,7 @@
 <script>
 	import { page } from '$app/state';
-	import { buttonVariants } from '$lib/components/ui/button';
+	import { Button } from '$lib/components/ui/button';
+	import { signIn } from '@auth/sveltekit/client';
 </script>
 
 <div class="flex flex-col items-center">
@@ -15,7 +16,9 @@
 				<strong>{page.data.session.user?.name ?? 'User'}</strong>
 			</span>
 		{:else}
-			<a class={buttonVariants({ variant: 'default' })} href="/auth/signin">Sign In</a>
+			<!-- <a class={buttonVariants({ variant: 'default' })} href="/auth/signin">Sign In</a> -->
+			<Button on:click={() => signIn('github', { redirectTo: '/user' })}>Sign In with GitHub</Button
+			>
 		{/if}
 	</div>
 </div>
