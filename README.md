@@ -4,7 +4,7 @@
 
 It supports recurring tasks (e.g. "Every Monday and Thursday"), daily checklists, and offers a clean, minimal interface that helps you focus on _what matters for today_.
 
-Built with [`sv`](https://github.com/sveltejs/cli), it runs fast and is easy to extend.
+Built with [`Svelte 5`](https://svelte.dev/), it runs fast and is easy to extend.
 
 ---
 
@@ -15,6 +15,24 @@ Built with [`sv`](https://github.com/sveltejs/cli), it runs fast and is easy to 
 - 🧠 **ADHD-friendly** – intentionally minimal and structured to reduce overwhelm.
 
 ---
+
+## 🌟 Show Support
+
+If you find this project helpful, [give it a ⭐ on GitHub](https://github.com/johnnysn/keepitup) — it really helps!
+
+And feel free to visit [johnnysn.com](https://johnnysn.com) to see more of my work.
+
+---
+
+## Screenshots
+
+![Landing page](./screenshots/landing.png)
+
+<div align="center">
+  <img src="./screenshots/dashboard.png" width="30%" alt="Dashboard"/>
+  <img src="./screenshots/daily.png" width="30%" alt="Daily tasks"/>
+  <img src="./screenshots/recurrent.png" width="30%" alt="Recurrent tasks"/>
+</div>
 
 ## 🚀 Developing
 
