@@ -62,6 +62,8 @@ Check database logs:
 docker compose -f compose-dev.yml logs -f postgres
 ```
 
+Finally, you should create a `.env` file and setup the environment variables specified in the `.env.example` file.
+
 ---
 
 ## 🏗️ Building
