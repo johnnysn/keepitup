@@ -33,6 +33,7 @@
 						<DropdownMenu.Trigger>Tasks</DropdownMenu.Trigger>
 						<DropdownMenu.Content>
 							<DropdownMenu.Group>
+								<DropdownMenu.Item><a href={'/user'}>Dashboard</a></DropdownMenu.Item>
 								<DropdownMenu.Item><a href={dailyLink}>Daily tasks</a></DropdownMenu.Item>
 								<DropdownMenu.Item
 									><a href={'/user/tasks/prototypes'}>Recurrent tasks</a></DropdownMenu.Item
