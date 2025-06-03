@@ -1,5 +1,6 @@
 <script lang="ts">
 	import * as Card from '$lib/components/ui/card/index.js';
+	import { dateStrFromDate } from '$lib/utils';
 	import { ListChecks } from 'lucide-svelte';
 	const { data } = $props();
 
@@ -11,6 +12,7 @@
 			? Math.round((data.doneFloatingTasks / data.totalFloatingTasks) * 100)
 			: 0
 	);
+	const todayStr = dateStrFromDate(new Date());
 </script>
 
 <div class="flex flex-col items-center">
@@ -21,12 +23,14 @@
 	<div class="flex flex-wrap justify-center gap-4">
 		<Card.Root>
 			<Card.Header>
-				<Card.Title>TODO list</Card.Title>
+				<Card.Title>
+					<a href="/user/tasks/daily/{todayStr}">TODO list</a>
+				</Card.Title>
 				<Card.Description>Progress with today's tasks</Card.Description>
 			</Card.Header>
 			<Card.Content class="flex flex-col gap-3">
 				<div class="flex items-center justify-end gap-2">
-					<ListChecks class="size-6 text-lime-600" />
+					<a href="/user/tasks/daily/{todayStr}"><ListChecks class="size-6 text-lime-600" /></a>
 					<span>{data.doneDailyTasks} / {data.totalDailyTasks}</span>
 				</div>
 				<div class="h-6 w-full overflow-hidden rounded-full bg-primary/20">
@@ -40,12 +44,14 @@
 
 		<Card.Root>
 			<Card.Header>
-				<Card.Title>Floating tasks</Card.Title>
+				<Card.Title>
+					<a href="/user/tasks/floating">Floating tasks</a>
+				</Card.Title>
 				<Card.Description>Tackle these when you can</Card.Description>
 			</Card.Header>
 			<Card.Content class="flex flex-col gap-3">
 				<div class="flex items-center justify-end gap-2">
-					<ListChecks class="size-6 text-lime-600" />
+					<a href="/user/tasks/floating"><ListChecks class="size-6 text-lime-600" /></a>
 					<span>{data.doneFloatingTasks} / {data.totalFloatingTasks}</span>
 				</div>
 				<div class="h-6 w-full overflow-hidden rounded-full bg-primary/20">
