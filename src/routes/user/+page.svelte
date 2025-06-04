@@ -46,7 +46,7 @@
 							<a href="/user/tasks/daily/{yesterdayStr}"
 								><ListChecks class="size-6 text-lime-600" /></a
 							>
-							<span>{data.doneDailyTasks} / {data.totalDailyTasks}</span>
+							<span>{data.doneYesterdayTasks} / {data.totalYesterdayTasks}</span>
 						</div>
 					</div>
 					<div class="h-6 w-full overflow-hidden rounded-full bg-primary/20">
