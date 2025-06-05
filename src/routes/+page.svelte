@@ -54,10 +54,10 @@
 			</div>
 		</div>
 	</section>
-	<button
-		type="button"
+	<a
+		href="/user"
 		class="order-2 rounded border border-foreground bg-transparent px-6 py-4 text-xl font-semibold text-foreground transition delay-100 duration-300 hover:border-background hover:bg-foreground hover:text-background md:order-3"
 	>
 		Start tackling tasks now!
-	</button>
+	</a>
 </div>
