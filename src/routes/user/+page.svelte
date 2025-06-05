@@ -31,7 +31,7 @@
 	<p class="mb-4 text-muted-foreground">Welcome, {data.session?.user?.name}!</p>
 
 	<div class="flex flex-wrap justify-center gap-4">
-		<div class="card">
+		<div class="card order-3 md:order-1">
 			<Card.Root>
 				<Card.Header>
 					<Card.Title>
@@ -59,7 +59,9 @@
 			</Card.Root>
 		</div>
 
-		<div class="card">
+		<div
+			class="card order-1 rounded shadow-[0_0_18px_#fb923c] ring-2 ring-primary transition-all duration-300 md:order-2 md:shadow-none md:hover:shadow-[0_0_18px_#fb923c]"
+		>
 			<Card.Root>
 				<Card.Header>
 					<Card.Title>
@@ -86,7 +88,7 @@
 			</Card.Root>
 		</div>
 
-		<div class="card">
+		<div class="card order-2 md:order-3">
 			<Card.Root>
 				<Card.Header>
 					<Card.Title>
