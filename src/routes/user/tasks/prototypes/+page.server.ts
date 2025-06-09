@@ -3,6 +3,7 @@ import { error, redirect, type Actions } from '@sveltejs/kit';
 import { superValidate, fail } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import {
+	prototypeActivationSchema,
 	prototypeDeleteSchema,
 	prototypeFormSchema,
 	prototypeOrderUpdateSchema,
@@ -18,7 +19,20 @@ export const load = async ({ locals, url }) => {
 
 	const protos = await prisma.taskPrototype.findMany({
 		where: {
-			userEmail: session.user.email
+			userEmail: session.user.email,
+			active: true
+		},
+		orderBy: [
+			{
+				order: 'asc'
+			}
+		]
+	});
+
+	const inactiveProtos = await prisma.taskPrototype.findMany({
+		where: {
+			userEmail: session.user.email,
+			active: false
 		},
 		orderBy: [
 			{
@@ -37,6 +51,7 @@ export const load = async ({ locals, url }) => {
 
 	return {
 		protos,
+		inactiveProtos,
 		form: await superValidate(prefilledValues, zod(prototypeFormSchema))
 	};
 };
@@ -78,6 +93,7 @@ export const actions: Actions = {
 				description: form.data.description,
 				weekDays: form.data.weekDays,
 				userEmail: session.user.email,
+				active: true,
 				order
 			}
 		});
@@ -158,6 +174,35 @@ export const actions: Actions = {
 		} catch (err) {
 			error(400, 'There has been a problem when updating the order of prototypes');
 		}
+
+		return {
+			success: true
+		};
+	},
+	activation: async ({ request, locals }) => {
+		const session = await locals.auth();
+		if (!session || !session.user || !session.user.email) error(401, 'User is not authorized.');
+
+		const formData = await request.formData();
+		const data = prototypeActivationSchema.parse(formData);
+
+		const prototype = await prisma.taskPrototype.findUnique({
+			where: {
+				id: data.id
+			}
+		});
+
+		if (!prototype || prototype.userEmail !== session.user.email)
+			error(403, 'User does not have access to the prototype');
+
+		await prisma.taskPrototype.update({
+			data: {
+				active: data.active
+			},
+			where: {
+				id: data.id
+			}
+		});
 
 		return {
 			success: true

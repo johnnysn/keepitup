@@ -20,6 +20,11 @@ export const prototypeDeleteSchema = zfd.formData({
 	id: zfd.text(z.string().min(2))
 });
 
+export const prototypeActivationSchema = zfd.formData({
+	id: zfd.text(z.string().min(2)),
+	active: zfd.text(z.string().transform((value) => value === 'true'))
+});
+
 export const prototypeOrderUpdateSchema = zfd.formData({
 	ids: zfd.text(
 		z.string().transform((input) => {

@@ -62,7 +62,8 @@ export const dailyRoutineService = {
 		const protos = (
 			await prisma.taskPrototype.findMany({
 				where: {
-					userEmail
+					userEmail,
+					active: true
 				},
 				orderBy: {
 					order: 'asc'

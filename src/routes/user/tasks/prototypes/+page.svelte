@@ -8,6 +8,7 @@
 	import * as Collapsible from '$lib/components/ui/collapsible/index.js';
 	import { ChevronsUpDown } from 'lucide-svelte';
 	import { page } from '$app/state';
+	import InactivePrototypes from './inactive-prototypes.svelte';
 
 	let { data } = $props();
 	let ids = $state('');
@@ -76,4 +77,8 @@
 	<PrototypeList items={data.protos} onUpdatedOrder={updatedOrder} {targetId} />
 
 	<form action="?/updateOrder" method="POST" bind:this={formElem} onsubmit={handleSubmit}></form>
+
+	<h2 class="mb-2 mt-3 text-xl font-bold">Inactive recurrent tasks</h2>
+
+	<InactivePrototypes prototypes={data.inactiveProtos} />
 </div>

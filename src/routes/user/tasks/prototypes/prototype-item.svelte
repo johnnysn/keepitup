@@ -4,7 +4,7 @@
 	import { Label } from '$lib/components/ui/label';
 	import { cn, formatWeekDay } from '$lib/utils';
 	import type { TaskPrototype } from '@prisma/client';
-	import { ChevronsDown, ChevronsUp, Edit, Trash2 } from 'lucide-svelte';
+	import { Ban, ChevronsDown, ChevronsUp, Edit, Trash2 } from 'lucide-svelte';
 	import WeekdaysMarker from './weekdays-marker.svelte';
 	import { onDestroy } from 'svelte';
 
@@ -103,6 +103,18 @@
 				<div class="flex justify-end gap-1.5">
 					<Button
 						variant="outline"
+						size="sm"
+						type="submit"
+						formaction="?/activation"
+						disabled={isPosting}
+						class="flex items-center gap-1.5"
+					>
+						<Ban class="size-4" />
+						<span>Deactivate</span>
+					</Button>
+					<input type="hidden" name="active" value="false" />
+					<Button
+						variant="destructive"
 						size="sm"
 						type="submit"
 						formaction="?/delete"

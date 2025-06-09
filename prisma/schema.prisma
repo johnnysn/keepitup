@@ -93,6 +93,7 @@ model TaskPrototype {
   description String?
   weekDays    String
   order       Int     @default(1)
+  active      Boolean @default(true)
   userEmail   String
   user        User    @relation(fields: [userEmail], references: [email])
 
