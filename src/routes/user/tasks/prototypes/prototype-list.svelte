@@ -31,6 +31,7 @@
 >
 	{#each items as item (item.id)}
 		<li
+			id={`proto_item_${item.id}`}
 			animate:flip={{ duration: flipDurationMs }}
 			class="flex w-full max-w-screen-sm items-center rounded border border-transparent bg-background/40 hover:border-border"
 		>

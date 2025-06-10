@@ -1,13 +1,12 @@
 <script lang="ts">
 	import { flip } from 'svelte/animate';
 	import { dragHandleZone, dragHandle, type DndEvent } from 'svelte-dnd-action';
-	import type { Task } from '@prisma/client';
 	import TaskItem from '$lib/components/task-item.svelte';
 	import { GripVertical } from 'lucide-svelte';
 	import type { AugmentedTask } from '$lib/types/augmented-task';
 
 	type Props = {
-		items: (Task & { recurrent: boolean })[];
+		items: AugmentedTask[];
 		onUpdatedOrder: (items: string[]) => void;
 	};
 

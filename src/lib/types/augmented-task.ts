@@ -1,3 +1,3 @@
-import type { Task } from "@prisma/client";
+import type { Task } from '@prisma/client';
 
-export type AugmentedTask = Task & {recurrent: boolean};
+export type AugmentedTask = Task & { recurrent: string | undefined };

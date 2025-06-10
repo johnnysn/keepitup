@@ -107,7 +107,7 @@
 					{#if task.recurrent}
 						<a
 							class="mr-2 flex cursor-pointer items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
-							href={`/user/tasks/prototypes?name=${task.name.trim()}`}
+							href={`/user/tasks/prototypes?name=${task.name.trim()}#proto_item_${task.recurrent}`}
 						>
 							<Repeat class="size-4" />
 							<span>recurrent</span>

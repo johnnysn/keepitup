@@ -39,16 +39,17 @@ export const load = async ({ params, locals }) => {
 				userEmail
 			},
 			select: {
-				name: true
+				name: true,
+				id: true
 			}
 		})
 	]);
 
-	const prototypeNames = new Set(prototypes.map((p) => p.name));
+	const prototypeNames = new Map(prototypes.map((p) => [p.name, p.id]));
 
 	const tasksWithPrototypeFlag = tasks.map((task) => ({
 		...task,
-		recurrent: prototypeNames.has(task.name)
+		recurrent: prototypeNames.get(task.name)
 	}));
 
 	return {
