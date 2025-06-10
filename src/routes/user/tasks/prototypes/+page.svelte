@@ -19,6 +19,7 @@
 
 	$effect(() => {
 		let name = page.url.searchParams.get('name');
+		let id = page.url.searchParams.get('id');
 		if (name) {
 			name = name.trim();
 			const proto = data.protos.find((p) => p.name === name);
@@ -29,6 +30,9 @@
 				targetId = undefined;
 				addFormOpen = true;
 			}
+		} else if (id) {
+			targetId = id;
+			addFormOpen = false;
 		}
 	});
 

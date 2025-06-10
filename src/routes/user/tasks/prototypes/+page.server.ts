@@ -14,6 +14,7 @@ import { prototypeService } from '$lib/server/prototype-service.js';
 export const load = async ({ locals, url }) => {
 	const session = await locals.auth();
 	const name = url.searchParams.get('name');
+	const id = url.searchParams.get('id');
 
 	if (!session || !session.user || !session.user.email) error(401, 'User is not authorized.');
 
