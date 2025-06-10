@@ -9,6 +9,7 @@
 	import { ChevronsUpDown } from 'lucide-svelte';
 	import { page } from '$app/state';
 	import InactivePrototypes from './inactive-prototypes.svelte';
+	import { fade } from 'svelte/transition';
 
 	let { data } = $props();
 	let ids = $state('');
@@ -60,7 +61,7 @@
 
 <div class="flex flex-col items-center gap-4">
 	<Collapsible.Root
-		class="flex w-full max-w-screen-sm flex-col items-center"
+		class="mb-2 flex w-full max-w-screen-sm flex-col items-center md:mb-4"
 		bind:open={addFormOpen}
 	>
 		<Collapsible.Trigger asChild let:builder>
@@ -74,11 +75,19 @@
 		</Collapsible.Content>
 	</Collapsible.Root>
 
-	<PrototypeList items={data.protos} onUpdatedOrder={updatedOrder} {targetId} />
+	{#if data.protos.length > 0}
+		<PrototypeList items={data.protos} onUpdatedOrder={updatedOrder} {targetId} />
+	{:else}
+		<span transition:fade class="text-muted-foreground">No active recurrent tasks...</span>
+	{/if}
 
 	<form action="?/updateOrder" method="POST" bind:this={formElem} onsubmit={handleSubmit}></form>
 
-	<h2 class="mb-2 mt-3 text-xl font-bold">Inactive recurrent tasks</h2>
+	{#if data.inactiveProtos.length > 0}
+		<div class="flex w-full flex-col items-center" transition:fade>
+			<h2 class="mb-2 mt-3 text-xl font-bold">Inactive recurrent tasks</h2>
 
-	<InactivePrototypes prototypes={data.inactiveProtos} />
+			<InactivePrototypes prototypes={data.inactiveProtos} />
+		</div>
+	{/if}
 </div>
