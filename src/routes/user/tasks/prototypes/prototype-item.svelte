@@ -98,6 +98,21 @@
 			/>
 		{/if}
 		{#if open}
+			<div class="flex items-center text-sm">
+				<label for={'rem_input_' + prototype.id} class="mr-2">Remaining recurrencies: </label>
+				<input
+					type="number"
+					step="1"
+					min="1"
+					name="remainingCount"
+					value={prototype.remainingCount}
+					onblur={() => form.requestSubmit()}
+					placeholder="Indefinite"
+					class="w-[80px] text-sm"
+					id={'rem_input_' + prototype.id}
+				/>
+			</div>
+
 			<div class="flex flex-col">
 				<WeekdaysMarker weekDays={prototype.weekDays} onCheckChanged={checkChangedHandler} />
 				<div class="flex justify-end gap-1.5">

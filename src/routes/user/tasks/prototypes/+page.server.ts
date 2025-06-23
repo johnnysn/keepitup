@@ -94,6 +94,7 @@ export const actions: Actions = {
 				description: form.data.description,
 				weekDays: form.data.weekDays,
 				userEmail: session.user.email,
+				remainingCount: form.data.remainingCount ?? null,
 				active: true,
 				order
 			}
@@ -155,7 +156,8 @@ export const actions: Actions = {
 			data: {
 				name: data.name,
 				description: data.description ?? '',
-				weekDays: data.weekDays
+				weekDays: data.weekDays,
+				remainingCount: data.remainingCount ?? null
 			}
 		});
 

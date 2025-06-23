@@ -1,17 +1,21 @@
-import { z } from 'zod';
+import { coerce, z } from 'zod';
 import { zfd } from 'zod-form-data';
+
+const remainingCountField = zfd.numeric(z.number().min(1).optional());
 
 export const prototypeFormSchema = z.object({
 	name: z.string().min(2).max(100),
 	description: z.optional(z.string().max(100)),
-	weekDays: z.string().regex(/[01]{7}/)
+	weekDays: z.string().regex(/[01]{7}/),
+	remainingCount: z.optional(z.number({ coerce: true }).min(1))
 });
 
 export const prototypeSimpleUpdateSchema = zfd.formData({
 	id: zfd.text(z.string().min(2)),
 	name: zfd.text(z.string().min(2).max(100)),
 	description: zfd.text(z.optional(z.string().max(100))),
-	weekDays: zfd.text(z.string().regex(/[01]{7}/))
+	weekDays: zfd.text(z.string().regex(/[01]{7}/)),
+	remainingCount: remainingCountField
 });
 
 export type PrototypeFormSchema = typeof prototypeFormSchema;

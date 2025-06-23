@@ -106,6 +106,29 @@
 		</div>
 	</Form.Field>
 
+	<Form.Field {form} name="remainingCount">
+		<Form.Control let:attrs>
+			<Form.Label>Recurrency count</Form.Label>
+			<Input
+				{...attrs}
+				bind:value={$formData.remainingCount}
+				type="number"
+				step="1"
+				min="1"
+				class="max-w-[100px]"
+				placeholder="Indefinite"
+			/>
+		</Form.Control>
+		<Form.Description>
+			Number of times this task will re-occur <br />
+			Leave blank for indefinite recurrency
+		</Form.Description>
+		<div class="flex min-h-4 flex-row">
+			<span></span>
+			<Form.FieldErrors />
+		</div>
+	</Form.Field>
+
 	<Form.Field {form} name="weekDays">
 		<Form.Control let:attrs>
 			<Input {...attrs} type="hidden" bind:value={$formData.weekDays} />

@@ -1,5 +1,5 @@
 import { dateFromDateStr, dateStrFromDate } from '$lib/utils';
-import { Prisma, type DailyRoutine, type TaskPrototype } from '@prisma/client';
+import { type DailyRoutine, type TaskPrototype } from '@prisma/client';
 import prisma from './prisma';
 
 export const dailyRoutineService = {
@@ -70,8 +70,6 @@ export const dailyRoutineService = {
 				}
 			})
 		).filter((p) => regex.test(p.weekDays));
-		// const protos = await prisma.$queryRaw<TaskPrototype[]>(Prisma.sql`SELECT * FROM taskprototypes
-		// WHERE useremail = ${userEmail} and weekdays ~ ${regexPattern}`);
 
 		if (protos.length !== 0) {
 			// Executing daily routine
@@ -90,17 +88,37 @@ export const dailyRoutineService = {
 			await prisma.$transaction(async (prisma) => {
 				let order = startingOrder;
 				for (const p of tasksToAdd) {
-					await prisma.task.create({
-						data: {
-							order,
-							name: p.name,
-							description: p.description,
-							date: reliableDate,
-							userEmail,
-							type: 'DAILY'
+					if (p.remainingCount == null || p.remainingCount > 0) {
+						await prisma.task.create({
+							data: {
+								order,
+								name: p.name,
+								description: p.description,
+								date: reliableDate,
+								userEmail,
+								type: 'DAILY'
+							}
+						});
+						order++;
+					}
+
+					if (p.remainingCount !== null) {
+						p.remainingCount--;
+
+						if (p.remainingCount <= 0) {
+							p.remainingCount = 0;
+							p.active = false;
 						}
-					});
-					order++;
+
+						await prisma.taskPrototype.update({
+							data: {
+								...p
+							},
+							where: {
+								id: p.id
+							}
+						});
+					}
 				}
 			});
 		}
