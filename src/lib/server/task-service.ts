@@ -1,4 +1,4 @@
-import type { Task, TaskType } from '@prisma/client';
+import type { Prisma, Task, TaskType } from '@prisma/client';
 import prisma from './prisma';
 
 const taskService = {
@@ -26,6 +26,36 @@ const taskService = {
 		});
 
 		return Math.max(maxOrder + 1, numberOfTasks + 1);
+	},
+
+	async addAtOrder(data: {
+		name: string;
+		type: TaskType;
+		date: Date;
+		userEmail: string;
+		order: number;
+	}) {
+		await prisma.$transaction(async (tx) => {
+			await tx.task.updateMany({
+				where: {
+					userEmail: data.userEmail,
+					type: data.type,
+					date: data.date,
+					order: {
+						gte: data.order
+					}
+				},
+				data: {
+					order: {
+						increment: 1
+					}
+				}
+			});
+
+			await tx.task.create({
+				data
+			});
+		});
 	},
 
 	async updateTasksOrder(userEmail: string, date: Date, ids: string[], type: TaskType) {
